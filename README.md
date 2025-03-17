@@ -141,6 +141,6 @@ go run main.go
 
 **FFlow** ⚡ **让工作流程更智能，让开发更高效**
 
-[GitHub](https://github.com/fflow-tech/fflow) · [文档](https://fflow-tech.github.io/docs/) · [示例](https://github.com/fflow-tech/examples)
+[GitHub](https://github.com/fflow-tech/fflow) · [编排指南](https://github.com/fflow-tech/fflow/blob/main/docs/user-guide.md)
 
 </div>
