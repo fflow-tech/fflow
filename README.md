@@ -133,7 +133,7 @@ go run main.go
 
 ## 📄 许可证
 
-本项目采用 [Apache License 2.0](LICENSE) 许可证。
+本项目采用 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) 许可证。
 
 ---
 
