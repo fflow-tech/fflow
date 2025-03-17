@@ -1,0 +1,213 @@
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/fflow/timer";
+option java_multiple_files = true;
+option java_package = "io.grpc.fflow.timer";
+option java_outer_classname = "TimerProto";
+
+package timer;
+
+service Endpoint {
+  // CreateTimer 创建定时器
+  rpc CreateTimer (CreateTimerReq) returns (CreateTimerRsp);
+  // EnableTimer 激活定时器
+  rpc EnableTimer (EnableTimerReq) returns (EnableTimerRsp);
+  // DisableTimer 去激活定时器
+  rpc DisableTimer (DisableTimerReq) returns (DisableTimerRsp);
+  // GetTimerDef 获取定时器定义
+  rpc GetTimerDef (GetTimerDefReq) returns (GetTimerDefRsp);
+  // DeleteTimerDef 删除定时器定义
+  rpc DeleteTimerDef (DeleteTimerDefReq) returns (DeleteTimerDefRsp);
+  // GetTimerDefList 获取定时器列表
+  rpc GetTimerDefList (GetTimerDefListReq) returns (GetTimerDefListRsp);
+  // GetRunHistoryList 获取定时器执行列表
+  rpc GetRunHistoryList (GetRunHistoryListReq) returns (GetRunHistoryListRsp);
+  // CreateApp 创建APP
+  rpc CreateApp (CreateAppReq) returns (CreateAppRsp);
+  // DeleteApp 删除App
+  rpc DeleteApp (DeleteAppReq) returns (DeleteAppRsp);
+  // GetAppList 获取App列表
+  rpc GetAppList (GetAppListReq) returns (GetAppListRsp);
+}
+
+// CreateTimerReq 创建定时器
+message CreateTimerReq {
+  BasicReq basic_req = 1;
+  string name = 2; // [必填] 定时器名称
+  string creator = 3;  // [必填] 创建者
+  string app = 4;  // [必填] 应用名
+  string cron = 5;      // [选填] 定时器定时配置
+  uint32 notify_type = 6;      // [必填] 通知类型 1:rpc 2:kafka
+  uint32 timer_type = 7;      // [必填] 定时器类型 1：延时定时器 2：cron定时器
+  string delay_time = 8;      // [选填] 延时定时器触发时间 格式为:"2006-01-02 15:04:05"
+  NotifyRpcParam notify_rpc_param = 9; // [选填] RPC 调用参数
+  NotifyHttpParam notify_http_param = 10; // [选填] HTTP 调用参数
+  string end_time = 11; // [必填] 结束时间 格式为 "2006-01-02 15:04:05"
+  uint32 trigger_type = 12;    // [必填] 触发类型 1:触发一次 2:持续触发
+  uint32 delete_type = 13; // [选填] 自动删除机制 0-不删除 1-删除
+  int32 execute_time_limit = 14; // [选填] 定时任务单次执行时间限制，范围为 0 ~ 15, 单位：s. 默认 15 s.
+}
+
+// NotifyRpcParam RPC 调用参数
+message NotifyRpcParam {
+  string service = 1; // [必填]服务名:对应 123 平台上 service.name
+  string method = 2; // [必填]回调方法名
+  string rpc_name = 3; // [必填]对应 method 别名，优先使用 RpcName 寻址
+  string params = 4; // [必填]回调参数
+  string callee_env = 5;// [必填]被调服务环境
+}
+
+message CreateTimerRsp {
+  BasicRsp basic_rsp = 1;
+  string data = 2;
+}
+
+// EnableTimerReq 激活定时器
+message EnableTimerReq {
+  BasicReq basic_req = 1;
+  string def_id = 2;  // [必填] 定时器定义ID
+}
+
+message EnableTimerRsp {
+  BasicRsp basic_rsp = 1;
+}
+
+// DisableTimerReq 去激活定时器
+message DisableTimerReq {
+  BasicReq basic_req = 1;
+  string def_id = 2;  // [必填] 定时器定义ID
+}
+
+message DisableTimerRsp {
+  BasicRsp basic_rsp = 1;
+}
+
+// GetTimerDefReq 获取定时器定义
+message GetTimerDefReq {
+  BasicReq basic_req = 1;
+  string def_id = 2;  // [必填] 定时器定义ID
+}
+
+// GetTimerDefRsp 获取定时器定义返回
+message GetTimerDefRsp {
+  BasicRsp basic_rsp = 1;
+  TimerDef timer_def = 2;
+}
+
+// DeleteTimerDefReq 删除定时器定义
+message DeleteTimerDefReq {
+  BasicReq basic_req = 1;
+  string def_id = 2;  // [必填] 定时器定义ID
+  string app = 3; // 定时器应用名称
+  string name = 4; // 定时器名称
+}
+
+message DeleteTimerDefRsp {
+  BasicRsp basic_rsp = 1;
+}
+
+message TimerDef {
+  string def_id = 1;  // [必填] 定时器定义ID
+  string name = 2; // [必填] 定时器名称
+  string creator = 3;  // [必填] 创建者
+  string cron = 4;      // [选填] 定时器定时配置
+  uint32 notify_type = 5;      // [必填] 通知类型 1:rpc 2:kafka
+  uint32 timer_type = 6;      // [必填] 定时器类型 1：延时定时器 2：cron定时器
+  string delay_time = 7;      // [选填] 延时定时器触发时间 格式为:"2006-01-02 15:04:05"
+  NotifyRpcParam notify_rpc_param = 8; // [选填] RPC 调用参数
+  string end_time = 9; // 截止日期
+  uint32 status = 10; // 当前状态 1:未激活, 2:已激活
+}
+
+// GetTimerDefList 获取定时器列表
+message GetTimerDefListReq {
+  BasicReq basic_req = 1;
+  string name = 2;   //  [选填] 定时器名称
+  string creator = 3;  // [选填] 创建者
+}
+
+message GetTimerDefListRsp {
+  BasicRsp basic_rsp = 1;
+  repeated TimerDef timer_defs = 2;
+}
+
+// GetRunHistoryListReq 获取定时器执行列表
+message GetRunHistoryListReq {
+  BasicReq basic_req = 1;
+  string def_id = 2;  // [必填] 定时器定义ID
+  bool asc_order = 3; // 是否升序
+  int32 page_index = 4;//
+  int32 page_size = 5;//
+}
+
+message GetRunHistoryListRsp {
+  BasicRsp basic_rsp = 1;
+  repeated TaskRunHistory history_list = 2;
+}
+
+message TaskRunHistory {
+  string def_id = 1;  // [必填] 定时器定义ID
+  string name = 2; // 定时器名称
+  string output = 3;  // 执行结果
+  string run_timer = 4;  // 执行时间戳
+  int64 cost_time = 5 ;// 执行耗时
+  string status = 6; // 当前状态
+}
+// CreateApp 创建APP
+message CreateAppReq {
+  BasicReq basic_req = 1;
+  string name = 2; // 应用名
+  string creator = 3; // 创建人
+}
+
+message CreateAppRsp {
+  BasicRsp basic_rsp = 1;
+}
+
+// DeleteApp 删除App
+message DeleteAppReq {
+  BasicReq basic_req = 1;
+  string name = 2; // 应用名
+}
+
+message DeleteAppRsp {
+  BasicRsp basic_rsp = 1;
+}
+
+// GetAppList 获取App列表
+message GetAppListReq {
+  BasicReq basic_req = 1;
+  string name = 2; // 应用名
+  string creator = 3; // 创建人
+  bool asc_order = 4; // 是否升序
+  int32 page_index = 5;//
+  int32 page_size = 6;//
+}
+
+message GetAppListRsp {
+  BasicRsp basic_rsp = 1;
+  repeated AppInfo app_list = 2; // 应用信息列表
+}
+
+message AppInfo {
+  int32 id = 1;// 应用ID
+  string name = 2; // 应用名
+  string creator = 3; // 创建人
+}
+
+message BasicReq {
+  string namespace = 1;       // 命名空间
+  string accessToken = 2;     // token
+}
+
+message BasicRsp {
+  int32 code = 1;            // 错误码, 具体定义参考 https://cloud.google.com/natural-language/nl-whitelist/reference/rpc/google.rpc?hl=zh-cn
+  string message = 2;
+}
+
+message NotifyHttpParam {
+  string method = 1; // [必填]  HTTP方法如 POST、GET
+  string url = 2; // url HTTP 路径
+  string header = 3; // HTTP 请求头
+  string body = 4; // 请求体
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/fflow/faas";
+option java_multiple_files = true;
+option java_package = "io.grpc.fflow.faas";
+option java_outer_classname = "FaasProto";
+
+package faas;
+
+service Faas {
+  rpc Call (CallReq) returns (CallRsp);
+}
+
+// Call 调用函数
+message CallReq {
+  BasicReq basicReq = 1;
+  string function = 2;  // [必填] 方法名
+  string input = 3;     // [选填] 传入数据
+}
+
+message CallRsp {
+  BasicRsp basicRsp = 1;
+  string output = 2;
+}
+
+message BasicReq {
+  string namespace = 1;       // 命名空间
+  string accessToken = 2;     // token
+}
+
+message BasicRsp {
+  int32 code = 1;            // 错误码, 具体定义参考 https://cloud.google.com/natural-language/nl-whitelist/reference/rpc/google.rpc?hl=zh-cn
+  string message = 2;
+}

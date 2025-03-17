@@ -1,0 +1,687 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/faas/api/v1/func": {
+            "get": {
+                "description": "查询函数详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "查询函数详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建人",
+                        "name": "creator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "函数名",
+                        "name": "function",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "函数 id",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "命名空间",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "版本号",
+                        "name": "version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "更新函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "更新函数",
+                "parameters": [
+                    {
+                        "description": "更新函数请求",
+                        "name": "updateReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateFunctionDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "创建函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "创建函数",
+                "parameters": [
+                    {
+                        "description": "创建函数请求",
+                        "name": "createReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateFunctionReqDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "删除函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "删除函数",
+                "parameters": [
+                    {
+                        "description": "删除函数请求",
+                        "name": "deleteReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DeleteFunctionDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/api/v1/func/call": {
+            "post": {
+                "description": "执行函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "执行函数",
+                "parameters": [
+                    {
+                        "description": "执行函数请求",
+                        "name": "callReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CallFunctionReqDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/api/v1/func/debug": {
+            "post": {
+                "description": "调试函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "调试函数",
+                "parameters": [
+                    {
+                        "description": " 调试函数请求",
+                        "name": "debugReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DebugFunctionDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/api/v1/func/histories": {
+            "delete": {
+                "description": "删除历史执行记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "删除历史执行记录",
+                "parameters": [
+                    {
+                        "description": "删除历史执行记录请求",
+                        "name": "deleteReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.BatchDeleteExpiredRunHistoryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/api/v1/func/history/list": {
+            "get": {
+                "description": "查询函数执行列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "查询函数执行列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "函数名称",
+                        "name": "function_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "description": "执行 ID 列表",
+                        "name": "ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "查询的最大 ID",
+                        "name": "max_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "命名空间",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页序号",
+                        "name": "page_index",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sorted_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "版本号",
+                        "name": "version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/api/v1/func/list": {
+            "get": {
+                "description": "查询函数列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "查询函数列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建人",
+                        "name": "creator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "函数名",
+                        "name": "function",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "命名空间",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页序号",
+                        "name": "page_index",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sorted_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "版本号",
+                        "name": "version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/faas/openapi/v1/func/call/{namespace}/{function}": {
+            "get": {
+                "description": "执行函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "通过执行函数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "命名空间",
+                        "name": "namespace",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "函数名称",
+                        "name": "function",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "调用函数请求体",
+                        "name": "params",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "执行函数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "函数相关接口"
+                ],
+                "summary": "执行函数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "命名空间",
+                        "name": "namespace",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "函数名称",
+                        "name": "function",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "调用函数请求体",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "constants.WebRsp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.BatchDeleteExpiredRunHistoryDTO": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "description": "执行 ID 列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "keep_days": {
+                    "description": "保留天数",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.CallFunctionReqDTO": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "description": "函数",
+                    "type": "string"
+                },
+                "input": {
+                    "description": "函数的输入",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "namespace": {
+                    "description": "命名空间",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "操作人",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateFunctionReqDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "function": {
+                    "description": "函数名",
+                    "type": "string"
+                },
+                "input_schema": {
+                    "description": "函数入参格式",
+                    "type": "string"
+                },
+                "language": {
+                    "description": "所使用的语言",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "命名空间",
+                    "type": "string"
+                },
+                "output_schema": {
+                    "description": "函数返回结果格式",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DebugFunctionDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "函数",
+                    "type": "string"
+                },
+                "input": {
+                    "description": "函数的输入",
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "language": {
+                    "description": "所使用的语言",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "命名空间",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "操作人",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DeleteFunctionDTO": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "description": "函数名",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "命名空间",
+                    "type": "string"
+                },
+                "operator": {
+                    "description": "操作人",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateFunctionDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "function": {
+                    "description": "函数名",
+                    "type": "string"
+                },
+                "input_schema": {
+                    "description": "函数入参格式",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "命名空间",
+                    "type": "string"
+                },
+                "output_schema": {
+                    "description": "函数返回结果格式",
+                    "type": "string"
+                },
+                "updater": {
+                    "description": "修改人",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

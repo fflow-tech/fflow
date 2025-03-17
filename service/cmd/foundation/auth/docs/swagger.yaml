@@ -1,0 +1,272 @@
+definitions:
+  constants.WebRsp:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+      total:
+        type: integer
+    type: object
+  dto.CurrentUserData:
+    properties:
+      authType:
+        type: string
+      avatar:
+        type: string
+      email:
+        type: string
+      namespace:
+        type: string
+      nickName:
+        type: string
+      phone:
+        type: string
+      status:
+        type: integer
+      username:
+        type: string
+    type: object
+  dto.CurrentUserReqDTO:
+    type: object
+  dto.CurrentUserRspDTO:
+    properties:
+      data:
+        $ref: '#/definitions/dto.CurrentUserData'
+      success:
+        type: boolean
+    type: object
+  dto.GetCaptchaReqDTO:
+    properties:
+      emailReceiver:
+        type: string
+    type: object
+  dto.GetCaptchaRspDTO:
+    properties:
+      success:
+        type: boolean
+    type: object
+  dto.GetUserNamespacesReqDTO:
+    properties:
+      username:
+        type: string
+    type: object
+  dto.LoginReqDTO:
+    properties:
+      autoLogin:
+        type: boolean
+      captcha:
+        type: string
+      emailReceiver:
+        type: string
+      password:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.LoginRspDTO:
+    properties:
+      currentAuthority:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+    type: object
+  dto.Oauth2CallbackReqDTO:
+    properties:
+      code:
+        type: string
+    type: object
+  dto.Oauth2CallbackRspDTO:
+    properties:
+      authType:
+        type: string
+      avatar:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      nickName:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.OutLoginReqDTO:
+    type: object
+  dto.OutLoginRspDTO:
+    properties:
+      success:
+        type: boolean
+    type: object
+  dto.SetUserCurrentNamespaceReqDTO:
+    properties:
+      namespace:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/api/v1/currentUser:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户
+      parameters:
+      - description: 当前用户请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CurrentUserReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CurrentUserRspDTO'
+      summary: 获取当前用户
+      tags:
+      - 用户相关接口
+  /auth/api/v1/login/account:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录
+      parameters:
+      - description: 登录请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginRspDTO'
+      summary: 用户登录
+      tags:
+      - 用户相关接口
+  /auth/api/v1/login/captcha:
+    post:
+      consumes:
+      - application/json
+      description: 发送邮箱验证码
+      parameters:
+      - description: 发送邮箱验证码请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetCaptchaReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetCaptchaRspDTO'
+      summary: 发送邮箱验证码
+      tags:
+      - 用户相关接口
+  /auth/api/v1/login/outLogin:
+    post:
+      consumes:
+      - application/json
+      description: 用户取消登录
+      parameters:
+      - description: 取消登录请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OutLoginReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OutLoginRspDTO'
+      summary: 用户取消登录
+      tags:
+      - 用户相关接口
+  /auth/api/v1/oauth2/callback:
+    get:
+      consumes:
+      - application/json
+      description: 用户登录回调
+      parameters:
+      - description: 登录请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Oauth2CallbackReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Oauth2CallbackRspDTO'
+      summary: 用户登录回调
+      tags:
+      - 用户相关接口
+  /auth/api/v1/user/namespace:
+    get:
+      consumes:
+      - application/json
+      description: 发送邮箱验证码
+      parameters:
+      - description: 发送邮箱验证码请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetUserNamespacesReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 发送邮箱验证码
+      tags:
+      - 用户相关接口
+    post:
+      consumes:
+      - application/json
+      description: 设置用户当前的命名空间
+      parameters:
+      - description: 设置用户当前的命名空间
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SetUserCurrentNamespaceReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 设置用户当前的命名空间
+      tags:
+      - 用户相关接口
+swagger: "2.0"

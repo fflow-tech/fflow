@@ -1,0 +1,466 @@
+definitions:
+  constants.WebRsp:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+      total:
+        type: integer
+    type: object
+  dto.ChangeTimerStatusDTO:
+    properties:
+      def_id:
+        description: '[必填] 主键ID'
+        type: string
+      status:
+        description: '[必填] 定时器定义状态 1:激活, 2:去激活'
+        type: integer
+    required:
+    - def_id
+    - status
+    type: object
+  dto.CreateAppDTO:
+    properties:
+      creator:
+        description: 创建人
+        type: string
+      name:
+        description: 应用名称
+        type: string
+    type: object
+  dto.CreateTimerDefDTO:
+    properties:
+      app:
+        description: '[必填] APP 应用名'
+        type: string
+      creator:
+        description: '[必填] 创建人'
+        type: string
+      cron:
+        description: 定时器定时配置
+        type: string
+      def_id:
+        description: 主键ID
+        type: string
+      delay_time:
+        description: 延时定时器触发时间 格式为:"2006-01-02 15:04:05"
+        type: string
+      delete_type:
+        description: 自动删除机制 0-不删除 1-删除
+        type: integer
+      end_time:
+        description: 定时器停止时间 格式为:"2006-01-02 15:04:05"
+        type: string
+      execute_time_limit:
+        description: 任务单次执行时间限制，单位：s. 默认 15 s.
+        type: integer
+      name:
+        description: '[必填] 定时器名称'
+        type: string
+      notify_http_param:
+        $ref: '#/definitions/dto.NotifyHttpParam'
+        description: Http 回调参数
+      notify_rpc_param:
+        $ref: '#/definitions/dto.NotifyRpcParam'
+        description: Rpc  回调参数
+      notify_type:
+        description: '[必填] 通知类型 1:rpc 2:kafka'
+        type: integer
+      status:
+        description: 定时器定义状态，1:激活, 2:未激活
+        type: integer
+      timer_type:
+        description: '[必填] 定时器类型 1：延时定时器 2：cron定时器'
+        type: integer
+      trigger_type:
+        description: 触发类型 1-触发一次 2-持续触发
+        type: integer
+    required:
+    - app
+    - creator
+    - name
+    - notify_type
+    - timer_type
+    type: object
+  dto.DeleteAppDTO:
+    properties:
+      name:
+        description: 应用名称
+        type: string
+    type: object
+  dto.NotifyHttpParam:
+    properties:
+      body:
+        description: 参数体
+        type: string
+      header:
+        description: header 请求头
+        type: string
+      method:
+        description: POST,GET 方法
+        type: string
+      url:
+        description: URL 路径
+        type: string
+    type: object
+  dto.NotifyRpcParam:
+    properties:
+      callee_env:
+        description: callee 被调服务环境
+        type: string
+      method:
+        description: 回调方法名
+        type: string
+      params:
+        description: 回调参数
+        type: string
+      rpc_name:
+        description: 对应 method 别名，优先使用 RpcName 寻址
+        type: string
+      service:
+        description: 服务名:对应 123 平台上 service.name
+        type: string
+    type: object
+  dto.TimerListSendNotifyDTO:
+    properties:
+      timer_list:
+        description: 定时器列表
+        items:
+          type: string
+        type: array
+    type: object
+  web.WebRsp:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /timer/api/v1/app/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建应用
+      parameters:
+      - description: 创建定时器定义
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateAppDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 创建应用
+      tags:
+      - 应用相关接口
+  /timer/api/v1/app/deleteApp:
+    delete:
+      consumes:
+      - application/json
+      description: 删除app
+      parameters:
+      - description: 删除APP
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteAppDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 删除app
+      tags:
+      - 应用相关接口
+  /timer/api/v1/app/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询 App 列表
+      parameters:
+      - description: 创建人
+        in: query
+        name: creator
+        type: string
+      - description: 应用名称
+        in: query
+        name: name
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: sorted_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 查询 App 列表
+      tags:
+      - 应用相关接口
+  /timer/api/v1/def/change:
+    post:
+      consumes:
+      - application/json
+      description: 改变定时器状态
+      parameters:
+      - description: 修改定时器状态
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChangeTimerStatusDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 改变定时器状态
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建定时器定义
+      parameters:
+      - description: 创建定时器定义
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTimerDefDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 创建定时器定义
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 删除定时器
+      parameters:
+      - in: query
+        name: app
+        type: string
+      - in: query
+        name: def_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 删除定时器
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/deleteRunHistories:
+    delete:
+      consumes:
+      - application/json
+      description: 删除过期历史执行记录
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 删除过期历史执行记录
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/get:
+    get:
+      consumes:
+      - application/json
+      description: 查询单条定时器定义
+      parameters:
+      - description: '[必填] 主键ID'
+        in: query
+        name: def_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 查询单条定时器定义
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/list:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询定时器列表
+      parameters:
+      - description: '[必填] APP 应用名'
+        in: query
+        name: app
+        required: true
+        type: string
+      - description: 创建人
+        in: query
+        name: creator
+        type: string
+      - description: 定时器名称
+        in: query
+        name: name
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: sorted_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 分页查询定时器列表
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/runHistory:
+    get:
+      consumes:
+      - application/json
+      description: 获取定时器运行历史记录
+      parameters:
+      - description: '[必填] APP 应用名'
+        in: query
+        name: app
+        required: true
+        type: string
+      - description: 创建人
+        in: query
+        name: creator
+        type: string
+      - description: 定时器名称
+        in: query
+        name: name
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: sorted_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 获取定时器运行历史记录
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/timerListSend:
+    post:
+      consumes:
+      - application/json
+      description: 定时器列表批量触发
+      parameters:
+      - description: 定时器列表批量触发
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TimerListSendNotifyDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 定时器列表批量触发
+      tags:
+      - 定时器相关接口
+  /timer/api/v1/def/timerTaskList:
+    get:
+      consumes:
+      - application/json
+      description: 获取定时器任务列表
+      parameters:
+      - description: 结束时间 时间戳格式 "2021-01-01 01:01"
+        in: query
+        name: end_time
+        type: string
+      - description: 开始时间 时间戳格式 "2021-01-01 01:01"
+        in: query
+        name: start_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebRsp'
+      summary: 获取定时器任务列表
+      tags:
+      - 定时器相关接口
+swagger: "2.0"

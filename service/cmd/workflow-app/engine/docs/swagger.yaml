@@ -1,0 +1,1212 @@
+definitions:
+  constants.WebRsp:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+      total:
+        type: integer
+    type: object
+  dto.ArchiveHistoryWorkflowInstsDTO:
+    properties:
+      def_id:
+        type: string
+      namespace:
+        type: string
+    type: object
+  dto.CancelNodeDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_inst_id:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.CancelSkipNodeDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.CancelWorkflowInstDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  dto.CompleteNodeDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_inst_id:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      output:
+        additionalProperties: true
+        type: object
+      reason:
+        description: 操作原因
+        type: string
+      status:
+        $ref: '#/definitions/entity.NodeInstStatus'
+    type: object
+  dto.CompleteWorkflowInstDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      output:
+        additionalProperties: true
+        type: object
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/entity.InstStatus'
+    required:
+    - inst_id
+    type: object
+  dto.CreateWorkflowDefDTO:
+    properties:
+      attribute:
+        $ref: '#/definitions/po.WorkflowDefAttr'
+        description: 额外属性
+      creator:
+        description: 创建人
+        type: string
+      def_id:
+        description: 主键ID
+        type: string
+      def_json:
+        description: 流程定义的内容
+        type: string
+      description:
+        description: 流程定义描述
+        type: string
+      name:
+        description: 流程定义名称
+        type: string
+      namespace:
+        type: string
+      parent_def_id:
+        description: 父流程定义 ID
+        type: string
+      version:
+        description: 流程的版本号
+        type: integer
+    type: object
+  dto.DebugWorkflowInstDTO:
+    properties:
+      add_breakpoints:
+        items:
+          type: string
+        type: array
+      add_mock_nodes:
+        items:
+          type: string
+        type: array
+      debug_mode:
+        type: string
+      def_id:
+        type: string
+      delete_breakpoints:
+        items:
+          type: string
+        type: array
+      delete_mock_nodes:
+        items:
+          type: string
+        type: array
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  dto.DisableWorkflowDefDTO:
+    properties:
+      def_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+    type: object
+  dto.EnableWorkflowDefDTO:
+    properties:
+      def_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+    required:
+    - def_id
+    type: object
+  dto.PauseWorkflowInstDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  dto.RerunNodeDTO:
+    properties:
+      def_id:
+        type: string
+      input:
+        additionalProperties: true
+        type: object
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.RestartWorkflowInstDTO:
+    properties:
+      def_id:
+        type: string
+      input:
+        additionalProperties: true
+        type: object
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  dto.ResumeNodeDTO:
+    properties:
+      def_id:
+        type: string
+      input:
+        additionalProperties: true
+        type: object
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_inst_id:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.ResumeWorkflowInstDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  dto.SendCronPresetEventDTO:
+    properties:
+      key:
+        type: string
+      value:
+        additionalProperties: true
+        type: object
+    type: object
+  dto.SendDriveEventDTO:
+    properties:
+      key:
+        type: string
+      value:
+        additionalProperties: true
+        type: object
+    type: object
+  dto.SendExternalEventDTO:
+    properties:
+      key:
+        type: string
+      value:
+        additionalProperties: true
+        type: object
+    type: object
+  dto.SendTriggerEventDTO:
+    properties:
+      key:
+        type: string
+      value:
+        additionalProperties: true
+        type: object
+    type: object
+  dto.SetNodeNearTimeoutDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_inst_id:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.SetNodeTimeoutDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_inst_id:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.SkipNodeDTO:
+    properties:
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      node_ref_name:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    type: object
+  dto.StartWorkflowInstDTO:
+    properties:
+      creator:
+        type: string
+      debug_mode:
+        type: boolean
+      def_id:
+        type: string
+      input:
+        additionalProperties: true
+        type: object
+      name:
+        type: string
+      namespace:
+        type: string
+      parent_inst_id:
+        type: string
+      parent_node_inst_id:
+        type: string
+      reason:
+        type: string
+    required:
+    - def_id
+    - namespace
+    type: object
+  dto.UpdateWorkflowInstCtxDTO:
+    properties:
+      context:
+        additionalProperties: true
+        type: object
+      def_id:
+        type: string
+      inst_id:
+        type: string
+      namespace:
+        type: string
+      operator:
+        type: string
+      reason:
+        type: string
+    required:
+    - inst_id
+    type: object
+  entity.InstStatus:
+    type: object
+  entity.NodeInstStatus:
+    type: object
+  po.WorkflowDefAttr:
+    properties:
+      parent_def_version:
+        description: 子流程对应的父流程的版本号
+        type: integer
+      ref_name:
+        description: 子流程对应的 RefName
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /engine/api/v1/def/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建流程定义
+      parameters:
+      - description: 创建流程定义请求
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateWorkflowDefDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 创建流程定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/disable:
+    post:
+      consumes:
+      - application/json
+      description: 去激活流程定义
+      parameters:
+      - description: 去激活流程定义请求
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DisableWorkflowDefDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 去激活流程定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/enable:
+    post:
+      consumes:
+      - application/json
+      description: 激活流程定义
+      parameters:
+      - description: 激活流程定义请求
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EnableWorkflowDefDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 激活流程定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/get:
+    get:
+      consumes:
+      - application/json
+      description: 查询单条工作流定义
+      parameters:
+      - in: query
+        name: creator
+        type: string
+      - in: query
+        name: def_id
+        required: true
+        type: string
+      - in: query
+        name: namespace
+        type: string
+      - description: 是否从备库读取数据
+        in: query
+        name: read_from_slave
+        type: boolean
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询单条工作流定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/list:
+    get:
+      consumes:
+      - application/json
+      description: 批量查询工作流定义
+      parameters:
+      - in: query
+        name: def_id
+        type: string
+      - in: query
+        name: group_by
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: namespace
+        type: string
+      - in: query
+        name: operator
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 是否从备库读取数据
+        in: query
+        name: read_from_slave
+        type: boolean
+      - in: query
+        name: sorted_by
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 批量查询工作流定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/update:
+    post:
+      consumes:
+      - application/json
+      description: 更新流程定义
+      parameters:
+      - description: 创建流程定义请求
+        in: body
+        name: def
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateWorkflowDefDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 更新流程定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/def/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传流程定义
+      parameters:
+      - description: 流程ID
+        in: formData
+        name: def_id
+        type: integer
+      - description: 流程名称
+        in: formData
+        name: name
+        type: string
+      - description: 工作流文件-json格式
+        in: formData
+        name: workflow_file
+        required: true
+        type: file
+      produces:
+      - multipart/form-data
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 上传流程定义
+      tags:
+      - 工作流定义相关接口
+  /engine/api/v1/event/sendcronpresetevent:
+    post:
+      consumes:
+      - application/json
+      description: 发送定时触发事件
+      parameters:
+      - description: 发送定时触发事件
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SendCronPresetEventDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 发送定时触发事件
+      tags:
+      - 事件相关接口
+  /engine/api/v1/event/senddriveevent:
+    post:
+      consumes:
+      - application/json
+      description: 发送驱动事件
+      parameters:
+      - description: 发送驱动事件
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SendDriveEventDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 发送驱动事件
+      tags:
+      - 事件相关接口
+  /engine/api/v1/event/sendexternalevent:
+    post:
+      consumes:
+      - application/json
+      description: 发送外部事件
+      parameters:
+      - description: 发送外部事件
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SendExternalEventDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 发送外部事件
+      tags:
+      - 事件相关接口
+  /engine/api/v1/event/sendtriggerevent:
+    post:
+      consumes:
+      - application/json
+      description: 发送触发器事件
+      parameters:
+      - description: 发送触发器事件
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SendTriggerEventDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 发送触发器事件
+      tags:
+      - 事件相关接口
+  /engine/api/v1/inst/archive:
+    post:
+      consumes:
+      - application/json
+      description: 归档流程实例
+      parameters:
+      - description: 归档流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ArchiveHistoryWorkflowInstsDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 归档流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/cancel:
+    post:
+      consumes:
+      - application/json
+      description: 取消流程实例
+      parameters:
+      - description: 取消流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CancelWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 取消流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/complete:
+    post:
+      consumes:
+      - application/json
+      description: 标记流程实例结束
+      parameters:
+      - description: 标记流程实例结束请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CompleteWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 标记流程实例结束
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/debug:
+    post:
+      consumes:
+      - application/json
+      description: 调试流程
+      parameters:
+      - description: 更新流程实例调试信息请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DebugWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 调试流程
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/get:
+    get:
+      consumes:
+      - application/json
+      description: 查询单条工作流实例
+      parameters:
+      - in: query
+        name: cur_node_inst_id
+        type: string
+      - in: query
+        name: def_id
+        type: string
+      - in: query
+        name: inst_id
+        required: true
+        type: string
+      - in: query
+        name: namespace
+        type: string
+      - in: query
+        name: operator
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询单条工作流实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询多条工作流实例
+      parameters:
+      - description: 是否按时间升序排列
+        in: query
+        name: asc_order
+        type: boolean
+      - in: query
+        name: def_id
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: namespace
+        type: string
+      - in: query
+        name: operator
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - description: 工作流状态
+        in: query
+        name: status
+        type: string
+      - description: 工作流状态列表
+        in: query
+        items:
+          type: string
+        name: statuses
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询多条工作流实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/pause:
+    post:
+      consumes:
+      - application/json
+      description: 暂停流程实例
+      parameters:
+      - description: 暂停流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PauseWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 暂停流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/restart:
+    post:
+      consumes:
+      - application/json
+      description: 重启流程实例
+      parameters:
+      - description: 重启流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RestartWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 重启流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/resume:
+    post:
+      consumes:
+      - application/json
+      description: 恢复流程实例
+      parameters:
+      - description: 恢复流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResumeWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 恢复流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/start:
+    post:
+      consumes:
+      - application/json
+      description: 创建流程实例
+      parameters:
+      - description: 启动流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.StartWorkflowInstDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 创建流程实例
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/inst/updatectx:
+    post:
+      consumes:
+      - application/json
+      description: 更新实例上下文
+      parameters:
+      - description: 重启流程实例请求
+        in: body
+        name: inst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateWorkflowInstCtxDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 更新实例上下文
+      tags:
+      - 工作流实例相关接口
+  /engine/api/v1/node/cancel:
+    post:
+      consumes:
+      - application/json
+      description: 取消节点执行
+      parameters:
+      - description: 取消节点执行请求
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CancelNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 取消节点执行
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/cancelskip:
+    post:
+      consumes:
+      - application/json
+      description: 取消跳过节点执行
+      parameters:
+      - description: 取消跳过节点执行
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CancelSkipNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 取消跳过节点执行
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/complete:
+    post:
+      consumes:
+      - application/json
+      description: 标记节点完成
+      parameters:
+      - description: 标记节点完成
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CompleteNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 标记节点完成
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/get:
+    get:
+      consumes:
+      - application/json
+      description: 查询节点实例信息
+      parameters:
+      - in: query
+        name: def_id
+        type: string
+      - in: query
+        name: def_version
+        type: integer
+      - in: query
+        name: inst_id
+        type: string
+      - in: query
+        name: namespace
+        type: string
+      - in: query
+        name: node_inst_id
+        type: string
+      - in: query
+        name: operator
+        type: string
+      - in: query
+        name: ref_name
+        type: string
+      - in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询节点实例信息
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/neartimeout:
+    post:
+      consumes:
+      - application/json
+      description: 标记节点接近超时
+      parameters:
+      - description: 标记节点接近超时
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SetNodeNearTimeoutDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 标记节点接近超时
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/rerun:
+    post:
+      consumes:
+      - application/json
+      description: 重跑节点
+      parameters:
+      - description: 重跑节点请求
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RerunNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 重跑节点
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/resume:
+    post:
+      consumes:
+      - application/json
+      description: 恢复节点执行
+      parameters:
+      - description: 恢复节点执行请求
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResumeNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 恢复节点执行
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/skip:
+    post:
+      consumes:
+      - application/json
+      description: 跳过节点执行
+      parameters:
+      - description: 跳过节点执行
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SkipNodeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 跳过节点执行
+      tags:
+      - 节点相关接口
+  /engine/api/v1/node/timeout:
+    post:
+      consumes:
+      - application/json
+      description: 标记节点超时
+      parameters:
+      - description: 标记节点超时
+        in: body
+        name: nodeInst
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SetNodeTimeoutDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 标记节点超时
+      tags:
+      - 节点相关接口
+swagger: "2.0"

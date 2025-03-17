@@ -1,0 +1,1867 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/engine/api/v1/def/create": {
+            "post": {
+                "description": "创建流程定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "创建流程定义",
+                "parameters": [
+                    {
+                        "description": "创建流程定义请求",
+                        "name": "def",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateWorkflowDefDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/disable": {
+            "post": {
+                "description": "去激活流程定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "去激活流程定义",
+                "parameters": [
+                    {
+                        "description": "去激活流程定义请求",
+                        "name": "def",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DisableWorkflowDefDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/enable": {
+            "post": {
+                "description": "激活流程定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "激活流程定义",
+                "parameters": [
+                    {
+                        "description": "激活流程定义请求",
+                        "name": "def",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EnableWorkflowDefDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/get": {
+            "get": {
+                "description": "查询单条工作流定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "查询单条工作流定义",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "creator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "def_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否从备库读取数据",
+                        "name": "read_from_slave",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/list": {
+            "get": {
+                "description": "批量查询工作流定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "批量查询工作流定义",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "def_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "group_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "operator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页序号",
+                        "name": "page_index",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否从备库读取数据",
+                        "name": "read_from_slave",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sorted_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "version",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/update": {
+            "post": {
+                "description": "更新流程定义",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "更新流程定义",
+                "parameters": [
+                    {
+                        "description": "创建流程定义请求",
+                        "name": "def",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateWorkflowDefDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/def/upload": {
+            "post": {
+                "description": "上传流程定义",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "工作流定义相关接口"
+                ],
+                "summary": "上传流程定义",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "流程ID",
+                        "name": "def_id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "流程名称",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "工作流文件-json格式",
+                        "name": "workflow_file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/event/sendcronpresetevent": {
+            "post": {
+                "description": "发送定时触发事件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "事件相关接口"
+                ],
+                "summary": "发送定时触发事件",
+                "parameters": [
+                    {
+                        "description": "发送定时触发事件",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SendCronPresetEventDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/event/senddriveevent": {
+            "post": {
+                "description": "发送驱动事件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "事件相关接口"
+                ],
+                "summary": "发送驱动事件",
+                "parameters": [
+                    {
+                        "description": "发送驱动事件",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SendDriveEventDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/event/sendexternalevent": {
+            "post": {
+                "description": "发送外部事件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "事件相关接口"
+                ],
+                "summary": "发送外部事件",
+                "parameters": [
+                    {
+                        "description": "发送外部事件",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SendExternalEventDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/event/sendtriggerevent": {
+            "post": {
+                "description": "发送触发器事件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "事件相关接口"
+                ],
+                "summary": "发送触发器事件",
+                "parameters": [
+                    {
+                        "description": "发送触发器事件",
+                        "name": "event",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SendTriggerEventDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/archive": {
+            "post": {
+                "description": "归档流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "归档流程实例",
+                "parameters": [
+                    {
+                        "description": "归档流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ArchiveHistoryWorkflowInstsDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/cancel": {
+            "post": {
+                "description": "取消流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "取消流程实例",
+                "parameters": [
+                    {
+                        "description": "取消流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CancelWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/complete": {
+            "post": {
+                "description": "标记流程实例结束",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "标记流程实例结束",
+                "parameters": [
+                    {
+                        "description": "标记流程实例结束请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CompleteWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/debug": {
+            "post": {
+                "description": "调试流程",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "调试流程",
+                "parameters": [
+                    {
+                        "description": "更新流程实例调试信息请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DebugWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/get": {
+            "get": {
+                "description": "查询单条工作流实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "查询单条工作流实例",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "cur_node_inst_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "def_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "inst_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "operator",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/list": {
+            "get": {
+                "description": "查询多条工作流实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "查询多条工作流实例",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "是否按时间升序排列",
+                        "name": "asc_order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "def_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "operator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页序号",
+                        "name": "page_index",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "工作流状态",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "工作流状态列表",
+                        "name": "statuses",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/pause": {
+            "post": {
+                "description": "暂停流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "暂停流程实例",
+                "parameters": [
+                    {
+                        "description": "暂停流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PauseWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/restart": {
+            "post": {
+                "description": "重启流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "重启流程实例",
+                "parameters": [
+                    {
+                        "description": "重启流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RestartWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/resume": {
+            "post": {
+                "description": "恢复流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "恢复流程实例",
+                "parameters": [
+                    {
+                        "description": "恢复流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ResumeWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/start": {
+            "post": {
+                "description": "创建流程实例",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "创建流程实例",
+                "parameters": [
+                    {
+                        "description": "启动流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.StartWorkflowInstDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/inst/updatectx": {
+            "post": {
+                "description": "更新实例上下文",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "工作流实例相关接口"
+                ],
+                "summary": "更新实例上下文",
+                "parameters": [
+                    {
+                        "description": "重启流程实例请求",
+                        "name": "inst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateWorkflowInstCtxDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/cancel": {
+            "post": {
+                "description": "取消节点执行",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "取消节点执行",
+                "parameters": [
+                    {
+                        "description": "取消节点执行请求",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CancelNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/cancelskip": {
+            "post": {
+                "description": "取消跳过节点执行",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "取消跳过节点执行",
+                "parameters": [
+                    {
+                        "description": "取消跳过节点执行",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CancelSkipNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/complete": {
+            "post": {
+                "description": "标记节点完成",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "标记节点完成",
+                "parameters": [
+                    {
+                        "description": "标记节点完成",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CompleteNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/get": {
+            "get": {
+                "description": "查询节点实例信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "查询节点实例信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "def_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "def_version",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "inst_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "namespace",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "node_inst_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "operator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "ref_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/neartimeout": {
+            "post": {
+                "description": "标记节点接近超时",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "标记节点接近超时",
+                "parameters": [
+                    {
+                        "description": "标记节点接近超时",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SetNodeNearTimeoutDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/rerun": {
+            "post": {
+                "description": "重跑节点",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "重跑节点",
+                "parameters": [
+                    {
+                        "description": "重跑节点请求",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RerunNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/resume": {
+            "post": {
+                "description": "恢复节点执行",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "恢复节点执行",
+                "parameters": [
+                    {
+                        "description": "恢复节点执行请求",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ResumeNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/skip": {
+            "post": {
+                "description": "跳过节点执行",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "跳过节点执行",
+                "parameters": [
+                    {
+                        "description": "跳过节点执行",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SkipNodeDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        },
+        "/engine/api/v1/node/timeout": {
+            "post": {
+                "description": "标记节点超时",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "节点相关接口"
+                ],
+                "summary": "标记节点超时",
+                "parameters": [
+                    {
+                        "description": "标记节点超时",
+                        "name": "nodeInst",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SetNodeTimeoutDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/constants.WebRsp"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "constants.WebRsp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ArchiveHistoryWorkflowInstsDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CancelNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_inst_id": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CancelSkipNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CancelWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CompleteNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_inst_id": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "reason": {
+                    "description": "操作原因",
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/entity.NodeInstStatus"
+                }
+            }
+        },
+        "dto.CompleteWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/entity.InstStatus"
+                }
+            }
+        },
+        "dto.CreateWorkflowDefDTO": {
+            "type": "object",
+            "properties": {
+                "attribute": {
+                    "description": "额外属性",
+                    "$ref": "#/definitions/po.WorkflowDefAttr"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "def_id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "def_json": {
+                    "description": "流程定义的内容",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "流程定义描述",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "流程定义名称",
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "parent_def_id": {
+                    "description": "父流程定义 ID",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "流程的版本号",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.DebugWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "add_breakpoints": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "add_mock_nodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "debug_mode": {
+                    "type": "string"
+                },
+                "def_id": {
+                    "type": "string"
+                },
+                "delete_breakpoints": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "delete_mock_nodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DisableWorkflowDefDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.EnableWorkflowDefDTO": {
+            "type": "object",
+            "required": [
+                "def_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PauseWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RerunNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RestartWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ResumeNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_inst_id": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ResumeWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SendCronPresetEventDTO": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "dto.SendDriveEventDTO": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "dto.SendExternalEventDTO": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "dto.SendTriggerEventDTO": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "dto.SetNodeNearTimeoutDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_inst_id": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SetNodeTimeoutDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_inst_id": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SkipNodeDTO": {
+            "type": "object",
+            "properties": {
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "node_ref_name": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.StartWorkflowInstDTO": {
+            "type": "object",
+            "required": [
+                "def_id",
+                "namespace"
+            ],
+            "properties": {
+                "creator": {
+                    "type": "string"
+                },
+                "debug_mode": {
+                    "type": "boolean"
+                },
+                "def_id": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "name": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "parent_inst_id": {
+                    "type": "string"
+                },
+                "parent_node_inst_id": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateWorkflowInstCtxDTO": {
+            "type": "object",
+            "required": [
+                "inst_id"
+            ],
+            "properties": {
+                "context": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "def_id": {
+                    "type": "string"
+                },
+                "inst_id": {
+                    "type": "string"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "operator": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.InstStatus": {
+            "type": "object"
+        },
+        "entity.NodeInstStatus": {
+            "type": "object"
+        },
+        "po.WorkflowDefAttr": {
+            "type": "object",
+            "properties": {
+                "parent_def_version": {
+                    "description": "子流程对应的父流程的版本号",
+                    "type": "integer"
+                },
+                "ref_name": {
+                    "description": "子流程对应的 RefName",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

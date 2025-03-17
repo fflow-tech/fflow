@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/fflow/auth";
+option java_multiple_files = true;
+option java_package = "io.grpc.fflow.auth";
+option java_outer_classname = "authProto";
+
+package auth;
+
+service auth {
+  rpc ValidateToken (ValidateTokenReq) returns (ValidateTokenRsp);
+}
+
+// ValidateTokenReq 调用函数
+message ValidateTokenReq {
+  BasicReq basicReq = 1;
+}
+
+message ValidateTokenRsp {
+  BasicRsp basicRsp = 1;
+}
+
+message BasicReq {
+  string namespace = 1;       // 命名空间
+  string accessToken = 2;     // token
+}
+
+message BasicRsp {
+  int32 code = 1;            // 错误码, 具体定义参考 https://cloud.google.com/natural-language/nl-whitelist/reference/rpc/google.rpc?hl=zh-cn
+  string message = 2;
+}

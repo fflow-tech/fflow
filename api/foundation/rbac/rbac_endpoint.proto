@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/fflow/rbac";
+option java_multiple_files = true;
+option java_package = "io.grpc.fflow.rbac";
+option java_outer_classname = "rbacProto";
+
+package rbac;
+
+service Rbac {
+  rpc GetPermissionsForUserInDomain (RbacReq) returns (GetPermissionsForUserInDomainRsp);
+  rpc GetRolesForUserInDomain (RbacReq) returns (GetRolesForUserInDomainRsp);
+  rpc GetDomainsForUser (RbacReq) returns (GetDomainsForUserRsp);
+  rpc AddPermissionToRole (RbacReq) returns (BasicRsp);
+  rpc DeletePermissionForRole (RbacReq) returns (BasicRsp);
+  rpc AddRoleForUserInDomain (RbacReq) returns (BasicRsp);
+  rpc AddRoleForUsersInDomain (RbacReq) returns (BasicRsp);
+  rpc DeleteRoleForUserInDomain (RbacReq) returns (BasicRsp);
+  rpc HasPermission (RbacReq) returns (BasicRsp);
+}
+
+message RbacReq {
+  string user = 1;
+  string role = 2;
+  string domain = 3;
+  string object = 4;
+  string permission = 5;
+  repeated string permissions = 6;
+  repeated string users = 7;
+}
+
+message GetPermissionsForUserInDomainRsp{
+  BasicRsp basicRsp = 1;
+  repeated string permissions = 2;
+}
+
+message GetRolesForUserInDomainRsp{
+  BasicRsp basicRsp = 1;
+  repeated string roles = 2;
+}
+
+message GetDomainsForUserRsp{
+  BasicRsp basicRsp = 1;
+  repeated string domains = 2;
+}
+
+message BasicRsp {
+  int32 code = 1;
+  string message = 2;
+}

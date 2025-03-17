@@ -1,0 +1,459 @@
+definitions:
+  constants.WebRsp:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+      total:
+        type: integer
+    type: object
+  dto.BatchDeleteExpiredRunHistoryDTO:
+    properties:
+      ids:
+        description: 执行 ID 列表
+        items:
+          type: integer
+        type: array
+      keep_days:
+        description: 保留天数
+        type: integer
+    type: object
+  dto.CallFunctionReqDTO:
+    properties:
+      function:
+        description: 函数
+        type: string
+      input:
+        additionalProperties: true
+        description: 函数的输入
+        type: object
+      namespace:
+        description: 命名空间
+        type: string
+      operator:
+        description: 操作人
+        type: string
+    type: object
+  dto.CreateFunctionReqDTO:
+    properties:
+      code:
+        description: 代码
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      description:
+        description: 描述
+        type: string
+      function:
+        description: 函数名
+        type: string
+      input_schema:
+        description: 函数入参格式
+        type: string
+      language:
+        description: 所使用的语言
+        type: string
+      namespace:
+        description: 命名空间
+        type: string
+      output_schema:
+        description: 函数返回结果格式
+        type: string
+    type: object
+  dto.DebugFunctionDTO:
+    properties:
+      code:
+        description: 函数
+        type: string
+      input:
+        additionalProperties: true
+        description: 函数的输入
+        type: object
+      language:
+        description: 所使用的语言
+        type: string
+      namespace:
+        description: 命名空间
+        type: string
+      operator:
+        description: 操作人
+        type: string
+    type: object
+  dto.DeleteFunctionDTO:
+    properties:
+      function:
+        description: 函数名
+        type: string
+      namespace:
+        description: 命名空间
+        type: string
+      operator:
+        description: 操作人
+        type: string
+    type: object
+  dto.UpdateFunctionDTO:
+    properties:
+      code:
+        description: 代码
+        type: string
+      description:
+        description: 描述
+        type: string
+      function:
+        description: 函数名
+        type: string
+      input_schema:
+        description: 函数入参格式
+        type: string
+      namespace:
+        description: 命名空间
+        type: string
+      output_schema:
+        description: 函数返回结果格式
+        type: string
+      updater:
+        description: 修改人
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /faas/api/v1/func:
+    delete:
+      consumes:
+      - application/json
+      description: 删除函数
+      parameters:
+      - description: 删除函数请求
+        in: body
+        name: deleteReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteFunctionDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 删除函数
+      tags:
+      - 函数相关接口
+    get:
+      consumes:
+      - application/json
+      description: 查询函数详情
+      parameters:
+      - description: 创建人
+        in: query
+        name: creator
+        type: string
+      - description: 函数名
+        in: query
+        name: function
+        type: string
+      - description: 函数 id
+        in: query
+        name: id
+        type: integer
+      - description: 命名空间
+        in: query
+        name: namespace
+        type: string
+      - description: 版本号
+        in: query
+        name: version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询函数详情
+      tags:
+      - 函数相关接口
+    post:
+      consumes:
+      - application/json
+      description: 创建函数
+      parameters:
+      - description: 创建函数请求
+        in: body
+        name: createReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateFunctionReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 创建函数
+      tags:
+      - 函数相关接口
+    put:
+      consumes:
+      - application/json
+      description: 更新函数
+      parameters:
+      - description: 更新函数请求
+        in: body
+        name: updateReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateFunctionDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 更新函数
+      tags:
+      - 函数相关接口
+  /faas/api/v1/func/call:
+    post:
+      consumes:
+      - application/json
+      description: 执行函数
+      parameters:
+      - description: 执行函数请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CallFunctionReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: 执行函数
+      tags:
+      - 函数相关接口
+  /faas/api/v1/func/debug:
+    post:
+      consumes:
+      - application/json
+      description: 调试函数
+      parameters:
+      - description: ' 调试函数请求'
+        in: body
+        name: debugReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DebugFunctionDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 调试函数
+      tags:
+      - 函数相关接口
+  /faas/api/v1/func/histories:
+    delete:
+      consumes:
+      - application/json
+      description: 删除历史执行记录
+      parameters:
+      - description: 删除历史执行记录请求
+        in: body
+        name: deleteReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BatchDeleteExpiredRunHistoryDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 删除历史执行记录
+      tags:
+      - 函数相关接口
+  /faas/api/v1/func/history/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询函数执行列表
+      parameters:
+      - description: 创建时间
+        in: query
+        name: created_at
+        type: string
+      - description: 函数名称
+        in: query
+        name: function_name
+        type: string
+      - description: 执行 ID 列表
+        in: query
+        items:
+          type: integer
+        name: ids
+        type: array
+      - description: 查询的最大 ID
+        in: query
+        name: max_id
+        type: integer
+      - description: 命名空间
+        in: query
+        name: namespace
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: sorted_by
+        type: string
+      - description: 版本号
+        in: query
+        name: version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询函数执行列表
+      tags:
+      - 函数相关接口
+  /faas/api/v1/func/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询函数列表
+      parameters:
+      - description: 创建人
+        in: query
+        name: creator
+        type: string
+      - description: 函数名
+        in: query
+        name: function
+        type: string
+      - description: 语言
+        in: query
+        name: language
+        type: string
+      - description: 命名空间
+        in: query
+        name: namespace
+        type: string
+      - in: query
+        name: order
+        type: string
+      - description: 分页序号
+        in: query
+        name: page_index
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
+      - in: query
+        name: sorted_by
+        type: string
+      - description: 版本号
+        in: query
+        name: version
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/constants.WebRsp'
+      summary: 查询函数列表
+      tags:
+      - 函数相关接口
+  /faas/openapi/v1/func/call/{namespace}/{function}:
+    get:
+      consumes:
+      - application/json
+      description: 执行函数
+      parameters:
+      - description: 命名空间
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: 函数名称
+        in: path
+        name: function
+        required: true
+        type: string
+      - description: 调用函数请求体
+        in: query
+        name: params
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: 通过执行函数
+      tags:
+      - 函数相关接口
+    post:
+      consumes:
+      - application/json
+      description: 执行函数
+      parameters:
+      - description: 命名空间
+        in: path
+        name: namespace
+        required: true
+        type: string
+      - description: 函数名称
+        in: path
+        name: function
+        required: true
+        type: string
+      - description: 调用函数请求体
+        in: body
+        name: input
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: 执行函数
+      tags:
+      - 函数相关接口
+swagger: "2.0"

@@ -1,0 +1,45 @@
+definitions:
+  dto.StartCollectReqDTO:
+    properties:
+      urls:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.StartCollectRspDTO:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      message:
+        type: string
+      total:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /blog-blank-demo-app/api/v1/collect/start:
+    post:
+      consumes:
+      - application/json
+      description: 采集相关接口
+      parameters:
+      - description: 采集请求
+        in: body
+        name: callReq
+        required: true
+        schema:
+          $ref: '#/definitions/dto.StartCollectReqDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StartCollectRspDTO'
+      summary: 采集相关接口
+      tags:
+      - 采集相关接口
+swagger: "2.0"

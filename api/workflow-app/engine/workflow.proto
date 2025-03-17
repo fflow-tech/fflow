@@ -1,0 +1,385 @@
+syntax = "proto3";
+
+option go_package = "google.golang.org/grpc/fflow/engine";
+option java_multiple_files = true;
+option java_package = "io.grpc.fflow.engine";
+option java_outer_classname = "EngineProto";
+
+package engine;
+
+service Workflow {
+  /************** 流程定义接口 **************/
+  // CreateDef 创建工作流定义
+  rpc CreateDef(CreateDefReq) returns (CreateDefRsp);
+  // UpdateDef 更新工作流定义
+  rpc UpdateDef(UpdateDefReq) returns (UpdateDefRsp);
+  // GetDefDetail 获取工作流定义
+  rpc GetDefDetail(GetDefDetailReq) returns (GetDefDetailRsp);
+  // EnableDef 激活工作流
+  rpc EnableDef(EnableDefReq) returns (EnableDefRsp);
+  // DisableDef 去激活工作流
+  rpc DisableDef(DisableDefReq) returns (DisableDefRsp);
+
+  /************** 流程实例接口 **************/
+  // StartInst 启动流程实例
+  rpc StartInst (StartInstReq) returns (StartInstRsp);
+  // CompleteInst 标记实例完成
+  rpc CompleteInst (CompleteInstReq) returns (CompleteInstRsp);
+  // CancelInst 终止流程
+  rpc CancelInst(CancelInstReq) returns (CancelInstRsp);
+  // PauseInst 暂停流程
+  rpc PauseInst(PauseInstReq) returns (PauseInstRsp);
+  // ResumeInst 从暂停中恢复流程
+  rpc ResumeInst(ResumeInstReq) returns (ResumeInstRsp);
+  // UpdateInstContext 更新实例环境参数
+  rpc UpdateInstContext(UpdateInstContextReq) returns (UpdateInstContextRsp);
+  // GetInstDetail 获取流程实例运行状态
+  rpc GetInstDetail(GetInstDetailReq) returns (GetInstDetailRsp);
+  // GetInstList 获取流程实例列表
+  rpc GetInstList(GetInstListReq) returns (GetInstListRsp);
+  // RestartInst 从某个节点重跑实例, 没有设定节点的情况下就从最近失败的节点开始重跑
+  rpc RestartInst(RestartInstReq) returns (RestartInstRsp);
+
+  /************** 节点实例接口 **************/
+  // GetNodeInstDetail 获取节点实例信息
+  rpc GetNodeInstDetail(GetNodeInstDetailReq)returns (GetNodeInstDetailRsp);
+  // SkipNode 跳过某节点
+  // 如果当前节点已经被调度, 当前执行的节点实例不会被调过, 后续的如果再度调度到该节点才会被跳过
+  rpc SkipNode(SkipNodeReq) returns (SkipNodeRsp);
+  // CancelSkipNode 恢复某节点(取消跳过)
+  rpc CancelSkipNode(CancelSkipNodeReq) returns (CancelSkipNodeRsp);
+  // CompleteNode 标记节点结束
+  rpc CompleteNode(CompleteNodeReq) returns (CompleteNodeRsp);
+  // CancelNode 终止指定节点的运行
+  rpc CancelNode(CancelNodeReq) returns (CancelNodeRsp);
+  // RerunNode 重跑指定已运行节点
+  rpc RerunNode(RerunNodeReq) returns (RerunNodeRsp);
+  // ResumeNode 从等待状态恢复节点执行
+  rpc ResumeNode(ResumeNodeReq) returns (ResumeNodeRsp);
+}
+
+// CreateDef 创建工作流定义
+message CreateDefReq {
+  BasicReq basicReq = 1;
+  string name = 2;      // [必填] 流程定义名称
+  string desc = 3;      // [可选] 流程描述
+  string author = 4;    // [必填] 流程作者
+  string content = 5;   // [必填] 流程定义内容
+}
+
+message CreateDefRsp {
+  BasicRsp basicRsp = 1;
+  string defID = 2;  // 流程定义ID
+}
+
+// UpdateDef 更新工作流定义
+message UpdateDefReq {
+  BasicReq basicReq = 1;
+  string defID = 2;   // [必填] 待修改的流程定义ID
+  string content = 3; // [必填] 流程定义内容
+  string author = 4;  // [必填] 作者
+  string desc = 5;    // [可选] 流程描述
+}
+
+message UpdateDefRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// GetDefDetail 获取工作流定义
+message GetDefDetailReq {
+  BasicReq basicReq = 1;
+  string defID = 2;     // [必填] 流程定义ID
+}
+
+message GetDefDetailRsp {
+  BasicRsp basicRsp = 1;
+  WorkflowDef workflowDef = 2;
+}
+
+// WorkflowDef 工作流定义
+message WorkflowDef{
+  string name = 1;       // 流程名称
+  string desc = 2;       // 流程描述
+  string author = 3;     // 修改人
+  string format = 4;     // 文件格式
+  string content = 5;    // 文件内容
+  int64 createAt = 6;    // 创建时间，unixSec时间戳（毫秒）
+  int64 updateAt = 7;    // 更新时间，unixSec时间戳（毫秒）
+  string status = 8;     // 流程状态
+}
+
+// EnableDef 激活工作流
+message EnableDefReq {
+  BasicReq basicReq = 1;
+  string defID = 2;  // [必填] 流程定义ID
+}
+
+message EnableDefRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// DisableDef 去激活工作流
+message DisableDefReq {
+  BasicReq basicReq = 1;
+  string defID = 2;  // [必填] 流程定义ID
+}
+
+message DisableDefRsp {
+  BasicRsp basicRsp = 1;
+}
+
+/************** 流程实例接口 **************/
+// StartInst 启动流程实例
+message StartInstReq {
+  BasicReq basicReq = 1;
+  string defID = 2;                // [必填] 流程定义ID
+  string instName = 3;             // [必填] 流程实例名称
+  string input = 4;                // [可选] 流程入参, json字符串
+  bool   debugMode = 5;            // [可选] 是否已调试模式启动
+}
+
+message StartInstRsp {
+  BasicRsp basicRsp = 1;
+  string instID = 2;        // [必填] 流程实例ID
+}
+
+// GetInstDetail 获取流程实例运行状态
+message GetInstDetailReq {
+  BasicReq basicReq = 1;
+  string instID = 2;       // [必填] 流程实例ID
+}
+
+message GetInstDetailRsp {
+  BasicRsp basicRsp = 1;
+  string name = 2;                              // 实例名称
+  string defID = 3;                             // 工作流定义ID
+  string instID = 4;                            // 流程ID
+  string input = 5;                             // 工作流入参
+  string status = 6;                            // 工作流状态
+  string creator = 7;                           // 工作流操作者
+  repeated NodeItem nodeItems = 8;              // 节点状态信息
+  int64 startAt = 9;                            // 开始运行时间，unixSec时间戳（毫秒）
+  int64 completedAt = 10;                       // 结束运行时间，unixSec时间戳（毫秒）
+  int64 costTime = 11;                          // 耗费时间，unixSec时间戳（毫秒）
+  repeated string curNodes = 12;                // 当前节点
+}
+
+// NodeItem 节点的信息
+message NodeItem {
+  string instID = 1;                          // 节点实例ID
+  string status = 2;                          // 状态
+  string input = 3;                           // 入参
+  string output = 4;                          // 出参
+  string pollInput = 5;                       // 轮询接口的入参
+  string pollOutput = 6;                      // 轮询接口的输出
+  string inputSchema = 7 [deprecated = true];  // 入参格式, 已废弃不再使用
+  string outputSchema = 8 [deprecated = true];                    // 出参格式, 已废弃不再使用
+  string pollInputSchema = 9 [deprecated = true];                 // 轮询入参格式, 已废弃不再使用
+  string pollOutputSchema = 10 [deprecated = true];               // 轮询出参格式, 已废弃不再使用
+  string nodeRefName = 11;                    // 节点引用标识
+  string name = 12;                           // 节点名称
+  string type = 13;                           // 节点类型
+  string biz = 14;                            // 业务自定义配置，json格式
+  int64 startAt = 15;                         // 开始运行时间，unixSec时间戳（毫秒）
+  int64 completedAt = 16;                     // 结束运行时间，unixSec时间戳（毫秒）
+  int32 seq = 17;                             // 顺序号
+  repeated string nexts = 18;                 // 节点多有可能后续节点的引用名称
+  repeated string parents = 19;               // 节点所有可能父节点的引用名称
+  int64 costTime = 20;                        // 耗费时间，以毫秒为单位
+  string url = 21;                            // 节点相关链接地址，如蓝盾构建地址
+}
+
+// CancelInst 终止流程
+message CancelInstReq {
+  BasicReq basicReq = 1;
+  string instID = 2;   // [必填] 流程实例ID
+}
+
+message CancelInstRsp{
+  BasicRsp basicRsp = 1;
+}
+
+// PauseInst 暂停流程
+message PauseInstReq {
+  BasicReq basicReq = 1;
+  string instID = 2;   // [必填] 流程实例ID
+}
+
+message PauseInstRsp{
+  BasicRsp basicRsp = 1;
+}
+
+// ResumeInst 恢复流程
+message ResumeInstReq {
+  BasicReq basicReq = 1;
+  string instID = 2;   // [必填] 流程实例ID
+}
+
+message ResumeInstRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// UpdateInstContext 更新实例参数环境参数
+message UpdateInstContextReq {
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string context = 3;          // [必填] 更新的变量，为一个json字符串
+}
+
+message UpdateInstContextRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// GetInstList 获取流程实例列表
+// 默认按时间降序排列
+message GetInstListReq {
+  BasicReq basicReq = 1;
+  string defID = 2;       // 流程定义ID
+  string status = 3;      // 工作流状态
+  bool ascOrder = 4;      // 是否升序排列
+  int32 pageIndex = 5;
+  int32 pageSize = 6;
+}
+
+// CompleteInstReq 结束流程
+message CompleteInstReq{
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string operator = 4;        // [必填] 操作者
+  string status = 5;          // [必填] success/failed
+  string output = 6;          // [可选] 输出参数，status为成功时需要
+  string failedReason = 7;    // [可选] 失败信息，status为失败时需要
+}
+
+message CompleteInstRsp{
+  BasicRsp basicRsp = 1;
+}
+
+message GetInstListRsp {
+  BasicRsp basicRsp = 1;
+  repeated InstDetail instDetails = 2; // 工作流列表
+  int32 pageIndex = 3;
+  int32 pageSize = 4;
+  int32 total = 5;
+}
+
+message InstDetail {
+  string name = 1;                              // 实例名称
+  string instID = 2;                            // 流程ID
+  string status = 3;                            // 工作流状态
+  string creator = 4;                           // 工作流操作者
+  int64 createAt = 5;                           // 创建时间，unixSec时间戳（秒）
+  int64 startAt = 6;                            // 开始运行时间, unixSec时间戳（毫秒）
+  int64 completedAt = 7;                           // 结束运行时间, unixSec时间戳（毫秒）
+}
+
+// RestartInst 从某个节点开始重跑实例 (节点之后的流程也会跑)
+message RestartInstReq{
+  BasicReq basicReq = 1;
+  string instID = 2;        // [必填] 流程实例ID
+  string nodeRefName = 3;   // [必填] 节点引用名称
+  string input = 4;         // [必填] 参数
+}
+
+message RestartInstRsp{
+  BasicRsp basicRsp = 1;
+}
+
+/************** 节点实例接口 **************/
+// GetNodeInstDetail 获取节点实例信息
+message GetNodeInstDetailReq {
+  BasicReq basicReq = 1;
+  string nodeInstID = 2;  // [必填] 节点实例ID
+}
+
+message GetNodeInstDetailRsp {
+  BasicRsp basicRsp = 1;
+  NodeItem nodeItem = 2;
+}
+
+// SkipNode 跳过某节点
+message SkipNodeReq {
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string nodeRefName = 3;     // [必填] 节点引用名称
+}
+
+message SkipNodeRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// CancelSkipNode 恢复某节点
+message CancelSkipNodeReq {
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string nodeRefName = 3;     // [必填] 节点引用名称
+}
+
+message CancelSkipNodeRsp {
+  BasicRsp basicRsp = 1;
+}
+
+// CompleteNode 结束节点
+message CompleteNodeReq{
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string nodeRefName = 3;     // [必填] 节点引用名称 不存在两个节点实例同时存在
+  string operator = 4;        // [必填] 操作者
+  string status = 5;          // [必填] success/failed
+  string nodeOutput = 6;      // [可选] 输出参数，status为成功时需要
+  string nodeInstID = 7;      // [可选] 节点实例ID，如果填写了节点实例ID，则操作的是具体的节点实例ID
+  string failedReason = 8;    // [可选] 失败信息，status为失败时需要
+}
+
+message CompleteNodeRsp{
+  BasicRsp basicRsp = 1;
+}
+
+// CancelNode 终止指定已运行节点
+message CancelNodeReq {
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string nodeRefName = 3;     // [必填] 节点引用名称
+  string operator = 4;        // [必填] 操作者
+  string nodeInstID = 5;      // [可选] 节点实例ID，如果填写了节点实例ID，则操作的是具体的节点实例ID
+}
+
+message CancelNodeRsp {
+  BasicRsp basicRsp = 1;
+}
+
+
+// RerunNode 重跑指定已运行节点 (只跑单个节点)
+message RerunNodeReq{
+  BasicReq basicReq = 1;
+  string instID = 2;      // [必填] 实例ID
+  string nodeRefName = 3; // [必填] 节点引用名称
+}
+
+message RerunNodeRsp{
+  BasicRsp basicRsp = 1;
+}
+
+// ResumeNode 继续指定等待中的节点
+message ResumeNodeReq {
+  BasicReq basicReq = 1;
+  string instID = 2;          // [必填] 实例ID
+  string nodeRefName = 3;     // [必填] 节点引用名称
+  string nodeInstID = 4;      // [可选] 节点实例ID，如果填写了节点实例ID，则操作的是具体的节点实例ID
+}
+
+message ResumeNodeRsp {
+  BasicRsp basicRsp = 1;
+}
+
+message BasicReq {
+  string namespace = 1;       // 命名空间
+  string accessToken = 2;     // token
+  string operator = 3;        // [必填] 操作人
+  string reason = 4;          // [可选] 调用原因
+}
+
+message BasicRsp {
+  int32 code = 1;            // 错误码, 具体定义参考 https://cloud.google.com/natural-language/nl-whitelist/reference/rpc/google.rpc?hl=zh-cn
+  string message = 2;
+}
