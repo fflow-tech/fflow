@@ -262,6 +262,14 @@ type FAASArgs struct {
 	Func      string `json:"func,omitempty"`
 }
 
+// MCPArgs MCP服务节点参数
+type MCPArgs struct {
+	ServiceNodeBasicArgs
+	URL        string            `json:"url,omitempty"`
+	Tool       string            `json:"tool,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
+}
+
 // GetServiceNodeArgs 获取服务节点参数
 func GetServiceNodeArgs(originNodeDef interface{}, argsType ServiceNodeArgsType) (interface{}, error) {
 	args, err := getServiceNodeOriginArgs(originNodeDef, argsType)
@@ -644,9 +652,11 @@ func (s *NodeType) UnmarshalJSON(b []byte) error {
 // ServiceType 服务节点类型
 type ServiceType string
 
+// HTTP、FAAS 和 MCP 服务类型常量
 const (
 	HTTPService ServiceType = "HTTP" // HTTP 服务节点
 	FAASService ServiceType = "FAAS" // FAAS 服务节点
+	MCPService  ServiceType = "MCP"  // MCP 服务节点
 )
 
 // UnmarshalJSON 重写反序列化方法
