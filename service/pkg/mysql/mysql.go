@@ -62,7 +62,6 @@ func GetClient(config config.MySQLConfig) (*Client, error) {
 	client := &Client{DB: db, Config: config}
 	if err != nil {
 		panic(fmt.Errorf("failed to connect database: %w", err))
-		return nil, err
 	}
 
 	clientMap.Store(config.Dsn, client)
@@ -76,7 +75,6 @@ func GetClient(config config.MySQLConfig) (*Client, error) {
 		Policy:   dbresolver.RandomPolicy{},
 	})); err != nil {
 		panic(fmt.Errorf("failed to register slave database, %w", err))
-		return nil, err
 	}
 
 	return client, nil

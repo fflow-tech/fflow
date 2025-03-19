@@ -41,6 +41,7 @@ func NewServiceNodeExecutor(repoProviderSet *ports.RepoProviderSet,
 		executor: map[entity.ServiceType]ServiceNodeRemoteExecutor{
 			entity.HTTPService: nodeexecutor.NewServiceHTTPNodeExecutor(repoProviderSet.RemoteRepo()),
 			entity.FAASService: nodeexecutor.NewServiceFAASNodeExecutor(repoProviderSet.RemoteRepo()),
+			entity.MCPService:  nodeexecutor.NewServiceMCPNodeExecutor(repoProviderSet.RemoteRepo()),
 		},
 	}
 }

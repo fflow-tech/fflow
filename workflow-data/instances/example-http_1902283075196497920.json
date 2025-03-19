@@ -1,0 +1,229 @@
+{
+  "workflow_def": {
+    "namespace": "testnamespace",
+    "id": "1",
+    "defID": "1902283075192303616",
+    "version": 1,
+    "status": "enabled",
+    "name": "执行 http 示例",
+    "timeout": {},
+    "owner": {},
+    "msg": {},
+    "nodes": [
+      {
+        "监控 backend 是否正常": {
+          "args": {
+            "body": {
+              "key": "value"
+            },
+            "method": "GET",
+            "protocol": "HTTP",
+            "url": "https://www.fflow.link/auth/ping"
+          },
+          "index": 0,
+          "next": "t2",
+          "type": "SERVICE",
+          "webhooks": [
+            "https://www.fflow.link/auth/ping"
+          ]
+        }
+      },
+      {
+        "t2": {
+          "args": {
+            "body": {
+              "key1": "value2"
+            },
+            "method": "GET",
+            "protocol": "HTTP",
+            "url": "https://www.baidu.com"
+          },
+          "index": 1,
+          "next": "end",
+          "type": "SERVICE"
+        }
+      }
+    ],
+    "createdAt": "2025-03-19T16:56:42.493924+08:00"
+  },
+  "inst_id": "1902283075196497920",
+  "pre_status": "succeed",
+  "status": "succeed",
+  "start_at": "2025-03-19T16:56:42.494529+08:00",
+  "last_restart_at": "0001-01-01T00:00:00Z",
+  "completed_at": "2025-03-19T16:56:43.877705+08:00",
+  "sched_node_insts": [
+    {
+      "node_def": {
+        "args": {
+          "body": {
+            "key1": "value2"
+          },
+          "method": "GET",
+          "protocol": "HTTP",
+          "url": "https://www.baidu.com"
+        },
+        "index": 1,
+        "msg": {},
+        "next": "end",
+        "owner": {},
+        "refName": "t2",
+        "retry": {},
+        "schedule": {},
+        "timeout": {},
+        "type": "SERVICE",
+        "wait": {}
+      },
+      "basic_node_def": {
+        "refName": "t2",
+        "name": "t2",
+        "owner": {},
+        "type": "SERVICE",
+        "retry": {},
+        "timeout": {},
+        "wait": {},
+        "schedule": {},
+        "args": {
+          "body": {
+            "key1": "value2"
+          },
+          "method": "GET",
+          "protocol": "HTTP",
+          "url": "https://www.baidu.com"
+        },
+        "next": "end",
+        "index": 1,
+        "msg": {}
+      },
+      "namespace": "testnamespace",
+      "def_id": "1902283075192303616",
+      "def_version": 1,
+      "inst_id": "1902283075196497920",
+      "node_inst_id": "1902283080670064640",
+      "pre_status": "succeed",
+      "status": "succeed",
+      "owner": {},
+      "biz": {
+        "input": {
+          "key1": "value2"
+        },
+        "output": {}
+      },
+      "input": {
+        "key1": "value2"
+      },
+      "scheduled_at": "2025-03-19T16:56:43.799452+08:00",
+      "wait_at": "0001-01-01T00:00:00Z",
+      "execute_at": "2025-03-19T16:56:43.801332+08:00",
+      "asyn_wait_res_at": "0001-01-01T00:00:00Z",
+      "completed_at": "2025-03-19T16:56:43.87627+08:00",
+      "operator": {},
+      "reason": {},
+      "nexts": [
+        "end"
+      ],
+      "parents": [
+        "监控 backend 是否正常"
+      ]
+    },
+    {
+      "node_def": {
+        "args": {
+          "body": {
+            "key": "value"
+          },
+          "method": "GET",
+          "protocol": "HTTP",
+          "url": "https://www.fflow.link/auth/ping"
+        },
+        "msg": {},
+        "next": "t2",
+        "owner": {},
+        "refName": "监控 backend 是否正常",
+        "retry": {},
+        "schedule": {},
+        "timeout": {},
+        "type": "SERVICE",
+        "wait": {},
+        "webhooks": [
+          "https://www.fflow.link/auth/ping"
+        ]
+      },
+      "basic_node_def": {
+        "refName": "监控 backend 是否正常",
+        "name": "监控 backend 是否正常",
+        "owner": {},
+        "type": "SERVICE",
+        "retry": {},
+        "timeout": {},
+        "wait": {},
+        "schedule": {},
+        "args": {
+          "body": {
+            "key": "value"
+          },
+          "method": "GET",
+          "protocol": "HTTP",
+          "url": "https://www.fflow.link/auth/ping"
+        },
+        "next": "t2",
+        "webhooks": [
+          "https://www.fflow.link/auth/ping"
+        ],
+        "msg": {}
+      },
+      "namespace": "testnamespace",
+      "def_id": "1902283075192303616",
+      "def_version": 1,
+      "inst_id": "1902283075196497920",
+      "node_inst_id": "1902283075204886528",
+      "pre_status": "succeed",
+      "status": "succeed",
+      "owner": {},
+      "biz": {
+        "input": {
+          "key": "value"
+        },
+        "output": {
+          "message": "pong"
+        }
+      },
+      "input": {
+        "key": "value"
+      },
+      "output": {
+        "message": "pong"
+      },
+      "scheduled_at": "2025-03-19T16:56:42.496369+08:00",
+      "wait_at": "0001-01-01T00:00:00Z",
+      "execute_at": "2025-03-19T16:56:42.497727+08:00",
+      "asyn_wait_res_at": "0001-01-01T00:00:00Z",
+      "completed_at": "2025-03-19T16:56:43.797947+08:00",
+      "operator": {},
+      "reason": {},
+      "nexts": [
+        "t2"
+      ]
+    }
+  ],
+  "input": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "execute_path": [
+    [
+      "监控 backend 是否正常"
+    ],
+    [
+      "t2"
+    ]
+  ],
+  "owner": {},
+  "reason": {
+    "failed_root_cause": {
+      "failed_node_ref_names": []
+    }
+  },
+  "operator": {},
+  "node_insts_count": 2
+}

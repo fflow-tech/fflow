@@ -23,20 +23,19 @@ FFlow 不仅仅是一个流程编排工具，更是一个**智能任务调度生
 
 ### 多语言脚本执行
 
-> 💡 **内置多语言执行引擎**，一套流程定义，多种语言实现
+> 💡 **内置多语言执行引擎**
 
 - 支持 Python, JavaScript, Go 等多种语言
 - 安全的脚本隔离与资源控制
 - 丰富的内置函数库
 
-### 服务编排与集成
+### 统一流程定义
 
-| 服务类型 | 描述 | 应用场景 |
-|---------|------|----------|
-| **Event** | 事件驱动的消费服务 | 异步任务处理、数据流转 |
-| **RPC** | 远程过程调用服务 | 跨服务通信、微服务调用 |
-| **Web** | HTTP/HTTPS RESTful服务 | API集成、前端交互 |
-| **Timer** | 定时任务服务 | 周期性任务、延时执行 |
+> 💡 **一次定义，随处运行**
+
+- 同一套工作流定义同时支持分布式服务端和本地运行
+- 无缝切换开发环境和生产环境
+- 标准化的工作流定义格式
 
 ## 🏗️ 架构设计
 
@@ -56,6 +55,21 @@ FFlow 采用**领域驱动设计(DDD)**和**大仓(Monorepo)管理**方式组织
 │   ├── pkg/       # 基础层：通用组件
 │   └── test/      # 测试代码
 └── deployer/      # 部署层：运维配置
+```
+
+### 命令行执行
+
+FFlow 支持通过命令行执行工作流:
+
+```bash
+# 执行工作流
+sh run_workflow.sh <工作流定义文件> <输入参数文件> [--build]
+
+# 示例 (直接执行)
+sh run_workflow.sh examples/example-http.json examples/example-http-input.json
+
+# 示例 (先编译再执行)
+sh run_workflow.sh examples/example-http.json examples/example-http-input.json --build
 ```
 
 ## 🚀 快速开始
@@ -88,10 +102,6 @@ cd service/cmd/demo-app/blank-demo
 go run main.go
 ```
 
-4. **访问API文档**
-
-浏览器打开 `http://localhost:8080/swagger/index.html` 查看API文档。
-
 ## 🔍 使用场景
 
 ### 业务流程自动化
@@ -100,6 +110,7 @@ go run main.go
 - 基于协同工具的跨部门审批流程
 - 数据处理与分析管道
 - IoT 设备控制与监控
+- AI Agent 的调度和执行
 
 ## 📊 性能指标
 
@@ -130,6 +141,7 @@ go run main.go
 - [ ] 更多AI模型集成支持
 - [ ] 分布式任务调度优化
 - [ ] 更完善的监控与报警系统
+- [ ] 支持 MCP(Model Context Protocol) 工具的调度
 
 ## 📄 许可证
 
