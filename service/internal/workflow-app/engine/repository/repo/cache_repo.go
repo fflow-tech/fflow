@@ -6,6 +6,7 @@ import (
 
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/cache"
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/cache/redis"
+	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/mq/memory"
 )
 
 // CacheRepo 缓存仓储层
@@ -15,6 +16,11 @@ type CacheRepo struct {
 
 // NewCacheRepo 构造方法
 func NewCacheRepo(d *redis.RedisCacheDAO) *CacheRepo {
+	return &CacheRepo{cacheDAO: d}
+}
+
+// NewCacheRepoWithMemory 构造方法
+func NewCacheRepoWithMemory(d *memory.CacheDAO) *CacheRepo {
 	return &CacheRepo{cacheDAO: d}
 }
 

@@ -8,6 +8,7 @@ import (
 
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/storage/po"
 	"github.com/fflow-tech/fflow/service/pkg/config"
+	"github.com/fflow-tech/fflow/service/pkg/log"
 	"github.com/fflow-tech/fflow/service/pkg/logs"
 	"github.com/fflow-tech/fflow/service/pkg/mysql"
 	"gorm.io/driver/sqlite"
@@ -85,6 +86,14 @@ func (c *MySQLClient) CreateTables() error {
 	if err != nil {
 		return fmt.Errorf("failed to create tables: %w", err)
 	}
+	// 查询已经创建成功的表
+	tables := []string{"history_node_inst", "history_workflow_inst", "node_inst", "trigger", "workflow_def", "workflow_inst"}
+	for _, table := range tables {
+		if !c.DB.Migrator().HasTable(table) {
+			return fmt.Errorf("table %s not created successfully", table)
+		}
+	}
+	log.Infof("Successfully created tables: %v", tables)
 	return nil
 }
 

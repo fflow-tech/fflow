@@ -6,6 +6,8 @@ import (
 
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/mq"
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/mq/eventbus"
+	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/dao/mq/memory"
+	"github.com/fflow-tech/fflow/service/pkg/log"
 )
 
 // EventBusRepo 事件总线仓储层
@@ -22,18 +24,32 @@ func NewEventBusRepo(d *eventbus.DriveEventClient, e *eventbus.ExternalEventClie
 	return &EventBusRepo{driveEventClient: d, externalEventClient: e, cronEventClient: c, triggerEventClient: t}
 }
 
+// NewEventBusRepoWithMemory 内存事件总线仓储层
+func NewEventBusRepoWithMemory(d *memory.DriveEventClient, e *memory.ExternalEventClient,
+	c *memory.CronEventClient, t *memory.TriggerEventClient) *EventBusRepo {
+	return &EventBusRepo{
+		driveEventClient:    d,
+		externalEventClient: e,
+		cronEventClient:     c,
+		triggerEventClient:  t,
+	}
+}
+
 // SendDriveEvent 发送驱动事件
 func (e *EventBusRepo) SendDriveEvent(ctx context.Context, msg interface{}) error {
+	log.Infof("SendDriveEvent msg: %v", msg)
 	return e.driveEventClient.SendEvent(ctx, msg)
 }
 
 // SendDelayDriveEvent 发送延时驱动事件
 func (e *EventBusRepo) SendDelayDriveEvent(ctx context.Context, deliverAfter time.Duration, msg interface{}) error {
+	log.Infof("SendDelayDriveEvent msg: %v", msg)
 	return e.driveEventClient.SendDelayEvent(ctx, deliverAfter, msg)
 }
 
 // SendPresetDriveEvent 发送定时驱动事件
 func (e *EventBusRepo) SendPresetDriveEvent(ctx context.Context, deliverAt time.Time, msg interface{}) error {
+	log.Infof("SendPresetDriveEvent msg: %v", msg)
 	return e.driveEventClient.SendPresetEvent(ctx, deliverAt, msg)
 }
 
@@ -45,6 +61,7 @@ func (e *EventBusRepo) NewDriveEventConsumer(ctx context.Context, group string,
 
 // SendExternalEvent 发送外部事件
 func (e *EventBusRepo) SendExternalEvent(ctx context.Context, msg interface{}) error {
+	log.Infof("SendExternalEvent msg: %v", msg)
 	return e.externalEventClient.SendEvent(ctx, msg)
 }
 
@@ -66,6 +83,7 @@ func (e *EventBusRepo) GetExternalEventType(message interface{}) (string, error)
 
 // SendCronPresetEvent 发送定时事件
 func (e *EventBusRepo) SendCronPresetEvent(ctx context.Context, deliverAt time.Time, msg interface{}) error {
+	log.Infof("SendCronPresetEvent deliverAt: %v, msg: %v", deliverAt, msg)
 	return e.cronEventClient.SendPresetEvent(ctx, deliverAt, msg)
 }
 
@@ -89,5 +107,6 @@ func (e *EventBusRepo) NewTriggerEventConsumer(ctx context.Context, group string
 
 // SendTriggerEvent 发送触发器事件
 func (e *EventBusRepo) SendTriggerEvent(ctx context.Context, key string, msg interface{}) error {
+	log.Infof("SendTriggerEvent key: %s, msg: %v", key, msg)
 	return e.triggerEventClient.SendEvent(ctx, key, msg)
 }

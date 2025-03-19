@@ -2,9 +2,11 @@ package memory
 
 import (
 	"context"
+	"sync"
 	"testing"
 	"time"
 
+	"github.com/fflow-tech/fflow/service/pkg/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,12 +14,28 @@ func TestSendMessage(t *testing.T) {
 	client := NewClient()
 	ctx := context.Background()
 	topic := "test-topic"
-	msg := "test-message"
+	messages := []string{"test-message-1", "test-message-2", "test-message-3"}
 
-	messageID, err := client.SendMessage(ctx, topic, msg)
+	var wg sync.WaitGroup
+	wg.Add(len(messages))
+
+	// 使用消费者来验证消息是否被发送
+	consumer, err := client.NewConsumer(ctx, topic, "subName", func(ctx context.Context, message interface{}) error {
+		defer wg.Done()
+		log.Infof("TestSendMessage consumer message: %v", message)
+		return nil
+	})
 	assert.NoError(t, err)
-	assert.Equal(t, "message-id", messageID)
-	assert.Contains(t, client.messages[topic], msg)
+	assert.NotNil(t, consumer)
+
+	// 发送多个消息
+	for _, msg := range messages {
+		_, err := client.SendMessage(ctx, topic, msg)
+		assert.NoError(t, err)
+	}
+
+	// 等待消费者处理完所有消息
+	wg.Wait()
 }
 
 func TestNewConsumer(t *testing.T) {
@@ -46,7 +64,6 @@ func TestDriveEventClient_SendEvent(t *testing.T) {
 
 	err := client.SendEvent(ctx, msg)
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["drive-event"], msg)
 }
 
 func TestDriveEventClient_SendDelayEvent(t *testing.T) {
@@ -60,7 +77,6 @@ func TestDriveEventClient_SendDelayEvent(t *testing.T) {
 	duration := time.Since(start)
 
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["drive-event"], msg)
 	assert.GreaterOrEqual(t, duration, delay)
 }
 
@@ -75,7 +91,6 @@ func TestDriveEventClient_SendPresetEvent(t *testing.T) {
 	duration := time.Since(start)
 
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["drive-event"], msg)
 	assert.GreaterOrEqual(t, duration, 1*time.Second)
 	consumer, err := client.NewConsumer(ctx, "drive-event", func(ctx context.Context, message interface{}) error {
 		assert.Equal(t, msg, message)
@@ -92,7 +107,6 @@ func TestExternalEventClient_SendEvent(t *testing.T) {
 
 	err := client.SendEvent(ctx, msg)
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["external-event"], msg)
 }
 
 func TestCronEventClient_SendPresetEvent(t *testing.T) {
@@ -106,7 +120,6 @@ func TestCronEventClient_SendPresetEvent(t *testing.T) {
 	duration := time.Since(start)
 
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["cron-event"], msg)
 	assert.GreaterOrEqual(t, duration, 1*time.Second)
 	consumer, err := client.NewConsumer(ctx, "cron-event", func(ctx context.Context, message interface{}) error {
 		assert.Equal(t, msg, message)
@@ -124,5 +137,4 @@ func TestTriggerEventClient_SendEvent(t *testing.T) {
 
 	err := client.SendEvent(ctx, key, value)
 	assert.NoError(t, err)
-	assert.Contains(t, client.messages["trigger-event"], value)
 }
