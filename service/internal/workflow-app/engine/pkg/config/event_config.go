@@ -37,6 +37,14 @@ func GetEventConfig() *EventConfig {
 		ExternalEventConsumerNum: 2,
 		TriggerEventConsumerNum:  2,
 		CronEventConsumerNum:     2,
+		DriveEventTopic:          "driven_event",
+		DriveEventGroup:          "EngineDrivenEvent.DefaultGroup",
+		ExternalEventTopic:       "external_event",
+		ExternalEventGroup:       "EngineExternalEvent.DefaultGroup",
+		CronEventTopic:           "cron_event",
+		CronEventGroup:           "EngineCronEvent.DefaultGroup",
+		TriggerEventTopic:        "trigger_event",
+		TriggerEventGroup:        "EngineTriggerEvent.DefaultGroup",
 	}
 	provider.GetConfigProvider().GetAny(context.Background(), eventBusGroupKey, &conf)
 	return &conf

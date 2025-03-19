@@ -20,3 +20,4 @@ app.yaml
 /timer
 .idea/*
 workflow-cli
+/workflow-data/*
