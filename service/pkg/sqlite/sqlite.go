@@ -41,8 +41,8 @@ func GetMySQLClient(config config.MySQLConfig) (*mysql.Client, error) {
 		return client.(*mysql.Client), nil
 	}
 
-	// 创建SQLite内存数据库作为MySQL替代
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
+	// 创建SQLite共享内存数据库作为MySQL替代
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
 		SkipDefaultTransaction: config.SkipDefaultTransaction,
 		Logger: logs.NewGormLogger(logs.Config{
 			SlowThreshold:             time.Duration(config.SlowThreshold) * time.Millisecond,

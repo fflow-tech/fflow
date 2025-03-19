@@ -24,9 +24,9 @@
           "body": {
             "key1": "value2"
           },
-          "func": "http_example",
-          "namespace": "testnamespace",
-          "protocol": "FAAS"
+          "method": "GET",
+          "protocol": "HTTP",
+          "url": "https://www.baidu.com"
         },
         "index": 1,
         "next": "end",
