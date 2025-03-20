@@ -19,7 +19,7 @@ esac
 
 # 构建下载 URL
 if [ "$VERSION" = "latest" ]; then
-  DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/download/latest/fflow-cli_${OS}_${ARCH}"
+  DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/latest/download/fflow-cli_${OS}_${ARCH}"
 else
   DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/download/${VERSION}/fflow-cli_${OS}_${ARCH}"
 fi
