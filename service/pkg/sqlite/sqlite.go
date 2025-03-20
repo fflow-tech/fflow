@@ -1,5 +1,5 @@
-// Package memory 提供内存版本的外部依赖实现，用于本地测试
-package memory
+// Package sqlite 提供SQLite版本的外部依赖实现，用于本地测试
+package sqlite
 
 import (
 	"fmt"
@@ -13,6 +13,7 @@ import (
 	"github.com/fflow-tech/fflow/service/pkg/mysql"
 
 	// 使用纯 Go 实现的 SQLite
+	_ "modernc.org/sqlite"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
