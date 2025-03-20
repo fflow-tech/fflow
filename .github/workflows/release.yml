@@ -36,7 +36,7 @@ jobs:
         go build -o "dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}/$output_name" service/cmd/workflow-cli/main.go
         
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
         path: dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
