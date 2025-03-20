@@ -12,10 +12,9 @@ import (
 	"github.com/fflow-tech/fflow/service/pkg/logs"
 	"github.com/fflow-tech/fflow/service/pkg/mysql"
 
-	// 使用纯 Go 实现的 SQLite
-	_ "modernc.org/sqlite"
+	// 使用 glebarez/sqlite 作为 GORM 驱动，避免使用 CGO
+	"github.com/glebarez/sqlite"
 
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
 )
