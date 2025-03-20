@@ -1,5 +1,5 @@
-// Package memory 提供内存版本的外部依赖实现，用于本地测试
-package memory
+// Package sqlite 提供SQLite版本的外部依赖实现，用于本地测试
+package sqlite
 
 import (
 	"fmt"
@@ -11,7 +11,10 @@ import (
 	"github.com/fflow-tech/fflow/service/pkg/log"
 	"github.com/fflow-tech/fflow/service/pkg/logs"
 	"github.com/fflow-tech/fflow/service/pkg/mysql"
-	"gorm.io/driver/sqlite"
+
+	// 使用 glebarez/sqlite 作为 GORM 驱动，避免使用 CGO
+	"github.com/glebarez/sqlite"
+
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
 )
@@ -41,8 +44,8 @@ func GetMySQLClient(config config.MySQLConfig) (*mysql.Client, error) {
 		return client.(*mysql.Client), nil
 	}
 
-	// 创建SQLite共享内存数据库作为MySQL替代
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
+	// 创建 SQLite 共享内存数据库作为 MySQL 替代
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared&_pragma=foreign_keys(1)&mode=memory&_txlock=immediate"), &gorm.Config{
 		SkipDefaultTransaction: config.SkipDefaultTransaction,
 		Logger: logs.NewGormLogger(logs.Config{
 			SlowThreshold:             time.Duration(config.SlowThreshold) * time.Millisecond,

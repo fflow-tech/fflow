@@ -27,6 +27,7 @@ require (
 	github.com/fflow-tech/fflow-sdk-go v0.0.5
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
+	github.com/glebarez/sqlite v1.7.0
 	github.com/go-redsync/redsync/v4 v4.13.0
 	github.com/go-resty/resty/v2 v2.15.3
 	github.com/go-sql-driver/mysql v1.7.0
@@ -64,7 +65,6 @@ require (
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gorm.io/driver/mysql v1.5.7
-	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver v1.5.3
 )
@@ -101,7 +101,6 @@ require (
 	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/glebarez/go-sqlite v1.20.3 // indirect
-	github.com/glebarez/sqlite v1.7.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
 	github.com/go-openapi/spec v0.20.7 // indirect
@@ -148,7 +147,6 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-sqlite3 v1.14.24 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/microsoft/go-mssqldb v0.17.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
