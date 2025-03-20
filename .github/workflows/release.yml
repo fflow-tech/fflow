@@ -19,7 +19,9 @@ jobs:
             goos: windows
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     
     - name: Set up Go
       uses: actions/setup-go@v4
@@ -31,6 +33,7 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
+        echo "Building from ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
         output_name="fflow-cli"
         if [ "$GOOS" = "windows" ]; then
           output_name="fflow-cli.exe"
