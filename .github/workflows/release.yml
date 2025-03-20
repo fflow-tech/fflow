@@ -66,4 +66,4 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
-        files: dist/*
+        files: dist/**/*
