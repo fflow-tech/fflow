@@ -19,7 +19,7 @@ fi
 # 如果指定了编译标志，则编译Go程序
 if [ "$BUILD_FLAG" = true ]; then
     echo "Compiling Go program..."
-    go build -o workflow-cli service/cmd/workflow-cli/main.go
+    go build -o wf-cli service/cmd/workflow-cli/main.go
     if [ $? -ne 0 ]; then
         echo "Failed to compile Go program"
         exit 1
@@ -28,4 +28,4 @@ fi
 
 # 执行工作流
 echo "Executing workflow..."
-./workflow-cli -file "$WORKFLOW_FILE" -input "$INPUT_FILE" -config.name "app" -config.type "yaml" -config.path "./"
+./wf-cli -file "$WORKFLOW_FILE" -input "$INPUT_FILE" -config.name "app" -config.type "yaml" -config.path "./"

@@ -19,7 +19,7 @@ app.yaml
 /engine
 /timer
 .idea/*
-workflow-cli
 workflow-data/*
 workflow-data/definitions/*
 workflow-data/instances/*
+wf-cli
