@@ -67,3 +67,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: dist/**/*
+        tag_name: ${{ github.ref_name }}
+        # 将此版本设置为最新发布
+        draft: false
+        prerelease: false
