@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - 'dev*'
 
 # 添加这个权限配置
 permissions:
@@ -62,12 +60,10 @@ jobs:
       with:
         path: dist
         
+    - name: List files
+      run: find dist -type f | sort
+        
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          dist/fflow-cli_linux_amd64/fflow-cli
-          dist/fflow-cli_linux_arm64/fflow-cli
-          dist/fflow-cli_darwin_amd64/fflow-cli
-          dist/fflow-cli_darwin_arm64/fflow-cli
-          dist/fflow-cli_windows_amd64/fflow-cli.exe
+        files: dist/**/*
