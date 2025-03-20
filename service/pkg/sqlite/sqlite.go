@@ -2,6 +2,7 @@
 package memory
 
 import (
+	"database/sql"
 	"fmt"
 	"sync"
 	"time"
@@ -11,6 +12,9 @@ import (
 	"github.com/fflow-tech/fflow/service/pkg/log"
 	"github.com/fflow-tech/fflow/service/pkg/logs"
 	"github.com/fflow-tech/fflow/service/pkg/mysql"
+
+	// 使用纯 Go 实现的 SQLite
+	"github.com/mattn/go-sqlite3"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	glogger "gorm.io/gorm/logger"
@@ -41,8 +45,17 @@ func GetMySQLClient(config config.MySQLConfig) (*mysql.Client, error) {
 		return client.(*mysql.Client), nil
 	}
 
+	// 设置 SQLite 使用纯 Go 模式
+	sql.Register("sqlite3_with_go_mode", &sqlite3.SQLiteDriver{
+		ConnectHook: func(conn *sqlite3.SQLiteConn) error {
+			// 启用纯 Go 模式
+			conn.SetLimit(sqlite3.SQLITE_LIMIT_WORKER_THREADS, 0)
+			return nil
+		},
+	})
+
 	// 创建SQLite共享内存数据库作为MySQL替代
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared&_pragma=foreign_keys(1)&mode=memory"), &gorm.Config{
 		SkipDefaultTransaction: config.SkipDefaultTransaction,
 		Logger: logs.NewGormLogger(logs.Config{
 			SlowThreshold:             time.Duration(config.SlowThreshold) * time.Millisecond,
