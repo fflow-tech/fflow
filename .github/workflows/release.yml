@@ -46,7 +46,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
-        path: dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
+        path: |
+          dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
+          dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}.exe
         
   release:
     needs: build
