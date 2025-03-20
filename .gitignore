@@ -22,4 +22,5 @@ app.yaml
 workflow-data/*
 workflow-data/definitions/*
 workflow-data/instances/*
-wf-cli
+fflow-cli
+.fflow

@@ -59,18 +59,25 @@ FFlow 采用**领域驱动设计(DDD)**和**大仓(Monorepo)管理**方式组织
 
 ### 命令行执行
 
-FFlow 支持通过命令行执行工作流:
+FFlow 提供了便捷的命令行工具 `fflow-cli` 用于本地执行工作流:
 
 ```bash
 # 执行工作流
-sh run_workflow.sh <工作流定义文件> <输入参数文件> [--build]
+fflow-cli -f <工作流定义文件> -i <输入参数文件>
 
-# 示例 (直接执行)
-sh run_workflow.sh examples/example-http.json examples/example-http-input.json
-
-# 示例 (先编译再执行)
-sh run_workflow.sh examples/example-http.json examples/example-http-input.json --build
+# 示例
+fflow-cli -f examples/example-http.json -i examples/example-http-input.json
 ```
+
+CLI 工具会自动在当前目录下创建 `.fflow` 文件夹用于存储工作流定义和实例数据。
+
+#### 主要参数说明
+
+- `-f`: 工作流定义文件路径
+- `-i`: 工作流输入参数文件路径
+- `-config.path`: 配置文件路径，默认为 `.fflow/`
+- `-def.path`: 工作流定义目录，默认为 `.fflow/definitions`
+- `-inst.path`: 工作流实例目录，默认为 `.fflow/instances`
 
 ## 🚀 快速开始
 
