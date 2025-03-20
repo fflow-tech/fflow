@@ -7,6 +7,10 @@ on:
     branches:
       - 'dev*'
 
+# 添加这个权限配置
+permissions:
+  contents: write  # 允许创建发布和上传资源
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -66,4 +70,4 @@ jobs:
           dist/fflow-cli_linux_arm64/fflow-cli
           dist/fflow-cli_darwin_amd64/fflow-cli
           dist/fflow-cli_darwin_arm64/fflow-cli
-          dist/fflow-cli_windows_amd64/fflow-cli.exe 
+          dist/fflow-cli_windows_amd64/fflow-cli.exe
