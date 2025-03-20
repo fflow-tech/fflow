@@ -29,11 +29,11 @@ import (
 var (
 	globalConfigName = flag.String("config.name", "app", "The global config name")
 	globalConfigType = flag.String("config.type", "yaml", "The global config type")
-	globalConfigPath = flag.String("config.path", "./config/", "The global config path")
-	definitionPath   = flag.String("def.path", "./workflow-data/definitions", "Workflow definition directory")
-	instancePath     = flag.String("inst.path", "./workflow-data/instances", "Workflow instance directory")
-	workflowFile     = flag.String("file", "", "Workflow definition file path, e.g. examples/example-http.json")
-	inputFile        = flag.String("input", "", "Workflow input file path, e.g. examples/example-http-input.json")
+	globalConfigPath = flag.String("config.path", ".fflow/", "The global config path")
+	definitionPath   = flag.String("def.path", ".fflow/definitions", "Workflow definition directory")
+	instancePath     = flag.String("inst.path", ".fflow/instances", "Workflow instance directory")
+	workflowFile     = flag.String("f", "", "Workflow definition file path, e.g. examples/example-http.json")
+	inputFile        = flag.String("i", "", "Workflow input file path, e.g. examples/example-http-input.json")
 )
 
 func main() {
@@ -65,9 +65,21 @@ func main() {
 
 // 初始化环境：工厂、数据库、事件服务器和目录
 func initializeEnvironment() error {
-	// 命令行模式下先创建一个空的 app.yaml 文件
-	if err := os.WriteFile(fmt.Sprintf("%s/%s.%s", *globalConfigPath, *globalConfigName, *globalConfigType), []byte{}, 0644); err != nil {
-		return fmt.Errorf("failed to create app.yaml file: %w", err)
+	// 命令行模式下先创建一个空的 app.yaml 文件，如果存在这个文件则忽略
+	configFilePath := fmt.Sprintf("%s/%s.%s", *globalConfigPath, *globalConfigName, *globalConfigType)
+
+	// 检查文件是否已存在
+	if _, err := os.Stat(configFilePath); os.IsNotExist(err) {
+		// 确保目录存在
+		if err := ensureDir(*globalConfigPath); err != nil {
+			return fmt.Errorf("failed to create config directory: %w", err)
+		}
+
+		// 创建空文件
+		if err := os.WriteFile(configFilePath, []byte{}, 0644); err != nil {
+			return fmt.Errorf("failed to create app.yaml file: %w", err)
+		}
+		log.Infof("Created empty config file: %s", configFilePath)
 	}
 
 	// 初始化本地工厂
@@ -163,10 +175,9 @@ func monitorWorkflow(workflowService *service.WorkflowService, instId string) {
 
 	// 打印提示信息
 	fmt.Println("\nWorkflow executor has started, processing workflow tasks...")
-	fmt.Println("Press Ctrl+C to exit the program")
+	fmt.Println("Press Ctrl+C to exit fflow-cli")
 
 	<-quit
-	fmt.Println("\nShutting down service...")
 }
 
 // 监控工作流状态
@@ -218,9 +229,7 @@ func copyWorkflowFile(srcPath, destDir string) (string, error) {
 		return "", fmt.Errorf("Failed to read source file: %w", err)
 	}
 
-	fileName := filepath.Base(srcPath)
-
-	destPath := filepath.Join(destDir, fileName)
+	destPath := filepath.Join(destDir, getDstFileName(srcPath))
 	if err := os.WriteFile(destPath, data, 0644); err != nil {
 		return "", fmt.Errorf("Failed to write file: %w", err)
 	}
@@ -228,6 +237,12 @@ func copyWorkflowFile(srcPath, destDir string) (string, error) {
 	log.Infof("Finished copying workflow definition file: %s\n", destPath)
 
 	return utils.BytesToJsonStr(data), nil
+}
+
+func getDstFileName(srcPath string) string {
+	fileName := filepath.Base(srcPath)
+	fileName = fmt.Sprintf("%s_%s%s", strings.TrimSuffix(fileName, filepath.Ext(fileName)), utils.GetCurrentTimestamp(), filepath.Ext(fileName))
+	return fileName
 }
 
 // 确保目录存在，如果不存在则创建
