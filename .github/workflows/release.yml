@@ -36,17 +36,19 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: |
         echo "Building from ref: ${{ github.ref }}, SHA: ${{ github.sha }}"
-        output_name="fflow-cli"
+        output_name="fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}"
         if [ "$GOOS" = "windows" ]; then
-          output_name="fflow-cli.exe"
+          output_name="${output_name}.exe"
         fi
-        GOTOOLCHAIN=auto go build -o "dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}/$output_name" service/cmd/workflow-cli/main.go
+        GOTOOLCHAIN=auto go build -o "dist/$output_name" service/cmd/workflow-cli/main.go
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
-        path: dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
+        path: |
+          dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}
+          dist/fflow-cli_${{ matrix.goos }}_${{ matrix.goarch }}.exe
         
   release:
     needs: build
@@ -62,8 +64,12 @@ jobs:
         
     - name: List files
       run: find dist -type f | sort
-        
+      
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
         files: dist/**/*
+        tag_name: ${{ github.ref_name }}
+        # 将此版本设置为最新发布
+        draft: false
+        prerelease: false

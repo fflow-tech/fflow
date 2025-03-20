@@ -24,6 +24,9 @@ else
   DOWNLOAD_URL="https://github.com/${GITHUB_REPO}/releases/download/${VERSION}/fflow-cli_${OS}_${ARCH}"
 fi
 
+# 打印下载地址
+echo "Download URL: $DOWNLOAD_URL"
+
 # 下载并安装
 echo "正在下载 fflow-cli..."
 curl -L "$DOWNLOAD_URL" -o /tmp/fflow-cli
