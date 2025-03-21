@@ -29,17 +29,24 @@ import (
 )
 
 var (
-	globalConfigName = flag.String("config.name", "app", "The global config name")
-	globalConfigType = flag.String("config.type", "yaml", "The global config type")
-	globalConfigPath = flag.String("config.path", ".fflow/", "The global config path")
-	definitionPath   = flag.String("def.path", ".fflow/definitions", "Workflow definition directory")
-	instancePath     = flag.String("inst.path", ".fflow/instances", "Workflow instance directory")
+	globalConfigName = flag.String("config-name", "app", "The global config name")
+	globalConfigType = flag.String("config-type", "yaml", "The global config type")
+	globalConfigPath = flag.String("config-dir", ".fflow/", "The global config path")
+	definitionPath   = flag.String("def-dir", ".fflow/definitions", "Workflow definition history directory")
+	instancePath     = flag.String("inst-dir", ".fflow/instances", "Workflow instance history directory")
 	workflowFile     = flag.String("f", "", "Workflow definition file path, e.g. examples/example-http.json")
 	inputFile        = flag.String("i", "", "Workflow input file path, e.g. examples/example-http-input.json")
+	showHelp         = flag.Bool("h", false, "Show help information")
 )
 
 func main() {
 	flag.Parse()
+
+	// 显示帮助信息
+	if *showHelp {
+		printHelp()
+		return
+	}
 
 	// 初始化环境
 	if err := initializeEnvironment(); err != nil {
@@ -303,4 +310,16 @@ func shutdownGraceful(fs ...func(chan struct{}) error) {
 
 	wg.Wait()
 	fmt.Println("Service has been closed")
+}
+
+// 打印帮助信息
+func printHelp() {
+	fmt.Println("FFlow Workflow CLI")
+	fmt.Println("\nUsage:")
+	fmt.Println("  fflow-cli [options]")
+	fmt.Println("\nOptions:")
+	flag.PrintDefaults()
+	fmt.Println("\nExamples:")
+	fmt.Println("  fflow-cli -f examples/example-http.json -i examples/example-http-input.json")
+	fmt.Println("  fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json")
 }
