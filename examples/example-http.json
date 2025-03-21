@@ -12,7 +12,6 @@
           "protocol": "HTTP",
           "url": "https://www.fflow.link/auth/ping"
         },
-        "index": 0,
         "next": "t2",
         "type": "SERVICE",
         "webhooks": ["https://www.fflow.link/auth/ping"]
@@ -28,7 +27,6 @@
           "protocol": "HTTP",
           "url": "https://www.baidu.com"
         },
-        "index": 1,
         "next": "end",
         "type": "SERVICE"
       }

@@ -1,0 +1,23 @@
+namespace: testnamespace
+name: 执行 http 示例
+nodes:
+  - 监控 backend 是否正常:
+      args:
+        body:
+          key: value
+        method: GET
+        protocol: HTTP
+        url: https://www.fflow.link/auth/ping
+      next: t2
+      type: SERVICE
+      webhooks:
+        - https://www.fflow.link/auth/ping
+  - t2:
+      args:
+        body:
+          key1: value2
+        method: GET
+        protocol: HTTP
+        url: https://www.baidu.com
+      next: end
+      type: SERVICE

@@ -14,6 +14,8 @@ import (
 
 	"encoding/json"
 
+	"gopkg.in/yaml.v3"
+
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/factory"
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/service"
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/service/event"
@@ -224,19 +226,45 @@ func saveWorkflowInstance(inst *dto.WorkflowInstDTO) {
 
 func copyWorkflowFile(srcPath, destDir string) (string, error) {
 	// 读取源文件
-	data, err := os.ReadFile(srcPath)
+	data, err := readDefinitionFile(srcPath)
 	if err != nil {
-		return "", fmt.Errorf("Failed to read source file: %w", err)
+		return "", fmt.Errorf("Failed to read workflow definition file: %w", err)
 	}
 
 	destPath := filepath.Join(destDir, getDstFileName(srcPath))
 	if err := os.WriteFile(destPath, data, 0644); err != nil {
-		return "", fmt.Errorf("Failed to write file: %w", err)
+		return "", fmt.Errorf("Failed to write workflow definition file: %w", err)
 	}
 
 	log.Infof("Finished copying workflow definition file: %s\n", destPath)
 
 	return utils.BytesToJsonStr(data), nil
+}
+
+func readDefinitionFile(srcPath string) ([]byte, error) {
+	data, err := os.ReadFile(srcPath)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read source file: %w", err)
+	}
+
+	// 检查文件扩展名，如果是yaml或yml，转换为json
+	ext := strings.ToLower(filepath.Ext(srcPath))
+	if ext == ".yaml" || ext == ".yml" {
+		var yamlObj interface{}
+		if err := yaml.Unmarshal(data, &yamlObj); err != nil {
+			return nil, fmt.Errorf("Failed to parse YAML file: %w", err)
+		}
+
+		jsonData, err := json.Marshal(yamlObj)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to convert YAML to JSON: %w", err)
+		}
+
+		// 更新数据为JSON格式
+		return jsonData, nil
+	}
+
+	return data, nil
 }
 
 func getDstFileName(srcPath string) string {

@@ -69,6 +69,7 @@ fflow-cli -f <工作流定义文件> -i <输入参数文件>
 
 # 示例
 fflow-cli -f examples/example-http.json -i examples/example-http-input.json
+fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json
 ```
 
 CLI 工具会自动在当前目录下创建 `.fflow` 文件夹用于存储工作流定义和实例数据。
@@ -93,7 +94,7 @@ curl -sSL https://raw.githubusercontent.com/fflow-tech/fflow/main/install.sh | b
 
 ### 环境要求
 
-- Go 1.16+
+- Go 1.23+
 - Docker (可选，用于容器化部署)
 - Kubernetes (可选，用于集群部署)
 
