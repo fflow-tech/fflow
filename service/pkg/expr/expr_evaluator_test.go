@@ -166,7 +166,7 @@ func TestDefaultExpressionEvaluator_Evaluate(t *testing.T) {
 			},
 			expr: `${(k2.k4 + 5) == 9 ? true : false }`,
 		}, true, false},
-		{"当前时间", args{expr: `${curtimeformat("0102")}`}, time.Now().Format("0102"), false},
+		{"当前时间1", args{expr: `${curtimeformat("0102")}`}, time.Now().Format("0102"), false},
 		{"字符串格式化1", args{
 			ctx: map[string]interface{}{
 				"test": "dd",
@@ -299,4 +299,14 @@ func TestExpressionEvaluator_ReplaceExpressionMap(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_curtimeformat(t *testing.T) {
+	c := &DefaultEvaluator{}
+	got, err := c.Evaluate(map[string]interface{}{}, `${curtimeformat("2006-01-02 15:04:05")}`)
+	if err != nil {
+		t.Errorf("Evaluate() error = %v", err)
+		return
+	}
+	t.Logf("got = %v", got)
 }

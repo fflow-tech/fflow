@@ -199,13 +199,14 @@ func monitorWorkflowStatus(workflowService *service.WorkflowService, instId stri
 			return
 		}
 
-		// 打印工作流实例状态
 		fmt.Printf("Workflow instance execute path: %v\n", inst.ExecutePath)
 		fmt.Printf("Workflow instance status: %v\n", inst.Status)
+		saveWorkflowInstance(inst)
 
 		// 如果工作流实例状态为完成，则退出
 		if inst.Status == entity.InstSucceed || inst.Status == entity.InstFailed {
-			saveWorkflowInstance(inst)
+			printExecutionPath(inst.ExecutePath)
+			fmt.Println("Workflow instance execute completed, status: ", inst.Status, ", exit fflow-cli")
 			close(quit)
 		}
 	}
@@ -322,4 +323,45 @@ func printHelp() {
 	fmt.Println("\nExamples:")
 	fmt.Println("  fflow-cli -f examples/example-http.json -i examples/example-http-input.json")
 	fmt.Println("  fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json")
+}
+
+func printExecutionPath(path [][]string) {
+	if len(path) == 0 {
+		return
+	}
+
+	fmt.Println("\nWorkflow Diagram:\n")
+
+	for i, nodes := range path {
+		if len(nodes) > 1 {
+			fmt.Println("     ┌────────────────────────────────┐")
+
+			for _, node := range nodes {
+				fmt.Println("     │    ┌──────────────────┐         │")
+				fmt.Printf("     │    │  %-10s  │         │\n", node)
+				fmt.Println("     │    └──────────────────┘         │")
+			}
+
+			fmt.Println("     └────────────────────────────────┘")
+		} else {
+			fmt.Println("     │")
+			fmt.Println("     ▼")
+			fmt.Println("     ┌────────────────────┐")
+			fmt.Printf("     │  %-10s  │\n", nodes[0])
+			fmt.Println("     └────────────────────┘")
+		}
+
+		if i < len(path)-1 {
+			fmt.Println("     │")
+		}
+	}
+	fmt.Println()
+}
+
+// 辅助函数：返回两个整数中的较小值
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
