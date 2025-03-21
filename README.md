@@ -69,6 +69,7 @@ fflow-cli -f <workflow-definition-file> -i <input-parameters-file>
 
 # Example
 fflow-cli -f examples/example-http.json -i examples/example-http-input.json
+fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json
 ```
 
 The CLI tool automatically creates a `.fflow` folder in the current directory for storing workflow definitions and instance data.
@@ -93,7 +94,7 @@ curl -sSL https://raw.githubusercontent.com/fflow-tech/fflow/main/install.sh | b
 
 ### Requirements
 
-- Go 1.16+
+- Go 1.23+
 - Docker (optional, for containerized deployment)
 - Kubernetes (optional, for cluster deployment)
 

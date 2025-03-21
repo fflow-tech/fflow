@@ -14,6 +14,8 @@ import (
 
 	"encoding/json"
 
+	"gopkg.in/yaml.v3"
+
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/factory"
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/service"
 	"github.com/fflow-tech/fflow/service/cmd/workflow-cli/service/event"
@@ -27,17 +29,24 @@ import (
 )
 
 var (
-	globalConfigName = flag.String("config.name", "app", "The global config name")
-	globalConfigType = flag.String("config.type", "yaml", "The global config type")
-	globalConfigPath = flag.String("config.path", ".fflow/", "The global config path")
-	definitionPath   = flag.String("def.path", ".fflow/definitions", "Workflow definition directory")
-	instancePath     = flag.String("inst.path", ".fflow/instances", "Workflow instance directory")
+	globalConfigName = flag.String("config-name", "app", "The global config name")
+	globalConfigType = flag.String("config-type", "yaml", "The global config type")
+	globalConfigPath = flag.String("config-dir", ".fflow/", "The global config path")
+	definitionPath   = flag.String("def-dir", ".fflow/definitions", "Workflow definition history directory")
+	instancePath     = flag.String("inst-dir", ".fflow/instances", "Workflow instance history directory")
 	workflowFile     = flag.String("f", "", "Workflow definition file path, e.g. examples/example-http.json")
 	inputFile        = flag.String("i", "", "Workflow input file path, e.g. examples/example-http-input.json")
+	showHelp         = flag.Bool("h", false, "Show help information")
 )
 
 func main() {
 	flag.Parse()
+
+	// 显示帮助信息
+	if *showHelp {
+		printHelp()
+		return
+	}
 
 	// 初始化环境
 	if err := initializeEnvironment(); err != nil {
@@ -224,19 +233,45 @@ func saveWorkflowInstance(inst *dto.WorkflowInstDTO) {
 
 func copyWorkflowFile(srcPath, destDir string) (string, error) {
 	// 读取源文件
-	data, err := os.ReadFile(srcPath)
+	data, err := readDefinitionFile(srcPath)
 	if err != nil {
-		return "", fmt.Errorf("Failed to read source file: %w", err)
+		return "", fmt.Errorf("Failed to read workflow definition file: %w", err)
 	}
 
 	destPath := filepath.Join(destDir, getDstFileName(srcPath))
 	if err := os.WriteFile(destPath, data, 0644); err != nil {
-		return "", fmt.Errorf("Failed to write file: %w", err)
+		return "", fmt.Errorf("Failed to write workflow definition file: %w", err)
 	}
 
 	log.Infof("Finished copying workflow definition file: %s\n", destPath)
 
 	return utils.BytesToJsonStr(data), nil
+}
+
+func readDefinitionFile(srcPath string) ([]byte, error) {
+	data, err := os.ReadFile(srcPath)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read source file: %w", err)
+	}
+
+	// 检查文件扩展名，如果是yaml或yml，转换为json
+	ext := strings.ToLower(filepath.Ext(srcPath))
+	if ext == ".yaml" || ext == ".yml" {
+		var yamlObj interface{}
+		if err := yaml.Unmarshal(data, &yamlObj); err != nil {
+			return nil, fmt.Errorf("Failed to parse YAML file: %w", err)
+		}
+
+		jsonData, err := json.Marshal(yamlObj)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to convert YAML to JSON: %w", err)
+		}
+
+		// 更新数据为JSON格式
+		return jsonData, nil
+	}
+
+	return data, nil
 }
 
 func getDstFileName(srcPath string) string {
@@ -275,4 +310,16 @@ func shutdownGraceful(fs ...func(chan struct{}) error) {
 
 	wg.Wait()
 	fmt.Println("Service has been closed")
+}
+
+// 打印帮助信息
+func printHelp() {
+	fmt.Println("FFlow Workflow CLI")
+	fmt.Println("\nUsage:")
+	fmt.Println("  fflow-cli [options]")
+	fmt.Println("\nOptions:")
+	flag.PrintDefaults()
+	fmt.Println("\nExamples:")
+	fmt.Println("  fflow-cli -f examples/example-http.json -i examples/example-http-input.json")
+	fmt.Println("  fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json")
 }
