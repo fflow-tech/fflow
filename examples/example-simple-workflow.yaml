@@ -1,0 +1,231 @@
+namespace: testnamespace
+name: 简单工作流示例
+desc: 包含各种节点类型的简单示例，易于调试和运行
+
+timeout:
+  duration: 1h
+  policy: TIME_OUT_WF
+
+input:
+  - taskType:
+      options:
+        - normal
+        - urgent
+      default: normal
+      required: true
+  - projectId:
+      required: true
+  - operator:
+      required: true
+
+variables:
+  taskId: "20250321100001"
+  retryCount: 0
+  maxRetry: 3
+
+owner:
+  wechat: admin
+  email: admin@example.com
+
+nodes:
+  - 评审任务创建:
+      type: ASSIGN
+      name: 评审任务创建
+      assign:
+        - variables:
+            status: pending
+            startTime: ${curtimeformat("2006-01-02 15:04:05")}
+      next: 评审等级划分
+
+  - 评审等级划分:
+      type: SWITCH
+      name: 评审等级划分
+      switch:
+        - condition: ${w.i.taskType == "urgent"}
+          next: 加急评审处理
+      next: 标准评审处理
+
+  - 加急评审处理:
+      type: SERVICE
+      name: 加急评审处理
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          taskId: ${w.v.taskId}
+          projectId: ${w.i.projectId}
+          operator: ${w.i.operator}
+      next: 专家组紧急动员
+
+  - 专家组紧急动员:
+      type: SERVICE
+      name: 专家组紧急动员
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          team: "urgent"
+          message: ${sprintf("加急评审-%s", w.v.taskId)}
+      next: 多维度评审
+
+  - 标准评审处理:
+      type: SERVICE
+      name: 标准评审处理
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          taskId: ${w.v.taskId}
+          projectId: ${w.i.projectId}
+      next: 评审人员等待
+
+  - 评审人员等待:
+      type: WAIT
+      name: 评审人员等待
+      wait:
+        duration: 5s
+      next: 多维度评审
+
+  - 多维度评审:
+      type: FORK
+      name: 多维度评审
+      fork:
+        - 技术方案评估
+        - 成本预算审核
+        - 合规风险评估
+
+  - 技术方案评估:
+      type: SERVICE
+      name: 技术方案评估
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          projectId: ${w.i.projectId}
+          taskId: ${w.v.taskId}
+      next: 技术评分生成
+
+  - 技术评分生成:
+      type: TRANSFORM
+      name: 技术评分生成
+      transform:
+        processedData:
+          status: ${技术方案评估.o.message}
+          resultType: ${技术方案评估.o.message}
+          timestamp: ${curtimeformat("2006-01-02 15:04:05")}
+      next: 评审结果汇总
+
+  - 成本预算审核:
+      type: SERVICE
+      name: 成本预算审核
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          projectId: ${w.i.projectId}
+          taskId: ${w.v.taskId}
+      next: 预算分析报告
+
+  - 预算分析报告:
+      type: ASSIGN
+      name: 预算分析报告
+      assign:
+        - variables:
+            resourceType: ${成本预算审核.o.message}
+      next: 评审结果汇总
+
+  - 合规风险评估:
+      type: SERVICE
+      name: 合规风险评估
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          taskId: ${w.v.taskId}
+          projectId: ${w.i.projectId}
+          action: "process_start"
+          timestamp: ${curtimeformat("2006-01-02 15:04:05")}
+      next: 评审结果汇总
+
+  - 评审结果汇总:
+      type: JOIN
+      name: 评审结果汇总
+      join:
+        - 技术评分生成
+        - 预算分析报告
+        - 合规风险评估
+      next: 评审报告生成
+
+  - 评审报告生成:
+      type: SERVICE
+      name: 评审报告生成
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          taskId: ${w.v.taskId}
+          projectId: ${w.i.projectId}
+          processedData: ${技术评分生成.o.message}
+          resourceId: ${w.v.resourceId}
+          resourceType: ${w.v.resourceType}
+      next: 评审结论审核
+
+  - 评审结论审核:
+      type: SWITCH
+      name: 评审结论审核
+      switch:
+        - condition: ${评审报告生成.o.message == "pong"}
+          next: 评审通过通知
+      next: 评审驳回通知
+
+  - 评审重审准备:
+      type: ASSIGN
+      name: 评审重审准备
+      assign:
+        - variables:
+            retryCount: ${w.v.retryCount + 1}
+            status: "retrying"
+      next: 重审等待期
+
+  - 重审等待期:
+      type: WAIT
+      name: 重审等待期
+      wait:
+        duration: 1m
+      next: 多维度评审
+
+  - 评审通过通知:
+      type: SERVICE
+      name: 评审通过通知
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          recipients: ${w.i.operator}
+          message: ${sprintf("项目评审 %s 已通过", w.v.taskId)}
+          status: "success"
+      next: end
+
+  - 评审驳回通知:
+      type: SERVICE
+      name: 评审驳回通知
+      args:
+        protocol: HTTP
+        method: GET
+        url: https://www.fflow.link/auth/ping
+        body:
+          recipients: ${w.i.operator};${w.owner.wechat}
+          message: ${sprintf("项目评审 %s 未通过", w.v.taskId)}
+          status: "failure"
+          reason: ${评审报告生成.o.errorMessage}
+          retryAttempts: ${w.v.retryCount}
+      next: end
+
