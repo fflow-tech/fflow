@@ -15,8 +15,8 @@ nodes:
   - t2:
       args:
         protocol: OPENAI
-        base_url: https://openrouter.ai/api/v1
-        api_key: your-api-key
+        baseURL: https://openrouter.ai/api/v1
+        apiKey: your-api-key
         model: deepseek/deepseek-r1-distill-qwen-32b:free
         prompt: Hello, how are you?
       next: end

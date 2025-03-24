@@ -273,14 +273,14 @@ type MCPArgs struct {
 // OpenAIArgs 定义了 OpenAI 节点执行器所需的参数
 type OpenAIArgs struct {
 	ServiceNodeBasicArgs
-	Prompt      string              `json:"prompt"`                                               // 提示词
-	Model       string              `json:"model"`                                                // 模型名称，如 "gpt-3.5-turbo"
-	Messages    []map[string]string `json:"messages"`                                             // 消息列表，包含 role 和 content
-	Temperature float64             `json:"temperature,default:0.5"`                              // 温度参数，控制随机性
-	MaxTokens   int                 `json:"max_tokens,default:1000"`                              // 最大 token 数
-	Stream      bool                `json:"stream,default:false"`                                 // 是否使用流式响应
-	APIKey      string              `json:"api_key"`                                              // OpenAI API Key
-	BaseURL     string              `json:"base_url,default:https://api.openai.com/v1,omitempty"` // OpenAI API Base URL
+	Prompt      string              `json:"prompt"`                                              // 提示词
+	Model       string              `json:"model"`                                               // 模型名称，如 "gpt-3.5-turbo"
+	Messages    []map[string]string `json:"messages"`                                            // 消息列表，包含 role 和 content
+	Temperature float64             `json:"temperature,default:0.5"`                             // 温度参数，控制随机性
+	MaxTokens   int                 `json:"maxTokens,default:1000"`                              // 最大 token 数
+	Stream      bool                `json:"stream,default:false"`                                // 是否使用流式响应
+	APIKey      string              `json:"apiKey"`                                              // OpenAI API Key
+	BaseURL     string              `json:"baseURL,default:https://api.openai.com/v1,omitempty"` // OpenAI API Base URL
 }
 
 // GetServiceNodeArgs 获取服务节点参数
