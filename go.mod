@@ -47,6 +47,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.14.0
+	github.com/sashabaranov/go-openai v1.38.1
 	github.com/segmentio/kafka-go v0.4.47
 	github.com/serenize/snaker v0.0.0-20201027110005-a7ad2135616e
 	github.com/spf13/cast v1.6.0
@@ -170,6 +171,7 @@ require (
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect

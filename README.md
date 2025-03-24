@@ -18,7 +18,7 @@ FFlow is not just a workflow orchestration tool, but an **intelligent task sched
 
 - 🤖 **Seamless AI Integration**: Workflow orchestration designed for AI Agents, perfectly combining intelligent tasks with business processes
 - 🔄 **Event-Driven Architecture**: High-performance event mechanism supporting real-time response in complex business scenarios
-- 🛠️ **Flexible Extensibility**: Multi-language script support, compatible with various Agent implementations and third-party service integrations
+- 🛠️ **Flexible Extensibility**: Multi-language script support, compatible with various LLM API implementations and third-party service integrations
 - 🏗️ **Enterprise Architecture**: Based on DDD (Domain-Driven Design) for clear code organization and maintainability
 
 ## 🌟 Key Features
@@ -70,6 +70,7 @@ fflow-cli -f <workflow-definition-file> -i <input-parameters-file>
 # Example
 fflow-cli -f examples/example-http.json -i examples/example-http-input.json
 fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json
+fflow-cli -f examples/example-openai.yaml -i examples/example-openai-input.json
 ```
 
 The CLI tool automatically creates a `.fflow` folder in the current directory for storing workflow definitions and instance data.

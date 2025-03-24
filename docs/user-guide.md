@@ -102,10 +102,10 @@ FFlow 支持多种类型的节点，每种类型具有特定的功能和配置�
 
 ### 🌐 SERVICE 节点
 
-服务节点用于调用外部服务，支持 TRPC、HTTP、FAAS 等多种协议。
+服务节点用于调用外部服务，支持 OpenAI、HTTP、FAAS 等多种协议。
 
 ```yaml
-name: HTTP调用示例
+name: HTTP 调用示例
 type: SERVICE
 args:
   protocol: HTTP
@@ -117,6 +117,17 @@ args:
       height: 100
   headers:
     Content-Type: application/json
+```
+
+```yaml
+name: OpenAI 调用示例
+type: SERVICE
+args:
+  protocol: OPENAI
+  baseURL: https://openrouter.ai/api/v1
+  apiKey: your-api-key
+  model: deepseek/deepseek-r1-distill-qwen-32b:free
+  prompt: Hello, how are you?
 ```
 
 #### 🔄 轮询功能

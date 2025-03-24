@@ -18,7 +18,7 @@ FFlow 不仅仅是一个流程编排工具，更是一个**智能任务调度生
 
 - 🤖 **无缝连接 AI 与业务**：专为 AI Agent 设计的工作流编排，让智能任务与业务流程完美结合
 - 🔄 **事件驱动架构**：基于高性能事件机制，支持复杂业务场景下的实时响应
-- 🛠️ **灵活的扩展性**：多语言脚本支持，兼容各种 Agent 实现和第三方服务集成
+- 🛠️ **灵活的扩展性**：多语言脚本支持，兼容各种大模型 API 实现和第三方服务集成
 - 🏗️ **企业级架构**：基于 DDD 领域驱动设计，清晰的代码组织便于扩展和维护
 
 ## 🌟 产品亮点
@@ -70,6 +70,7 @@ fflow-cli -f <工作流定义文件> -i <输入参数文件>
 # 示例
 fflow-cli -f examples/example-http.json -i examples/example-http-input.json
 fflow-cli -f examples/example-http.yaml -i examples/example-http-input.json
+fflow-cli -f examples/example-openai.yaml -i examples/example-openai-input.json
 ```
 
 CLI 工具会自动在当前目录下创建 `.fflow` 文件夹用于存储工作流定义和实例数据。

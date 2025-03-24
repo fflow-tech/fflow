@@ -270,6 +270,19 @@ type MCPArgs struct {
 	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
+// OpenAIArgs 定义了 OpenAI 节点执行器所需的参数
+type OpenAIArgs struct {
+	ServiceNodeBasicArgs
+	Prompt      string              `json:"prompt"`                                              // 提示词
+	Model       string              `json:"model"`                                               // 模型名称，如 "gpt-3.5-turbo"
+	Messages    []map[string]string `json:"messages"`                                            // 消息列表，包含 role 和 content
+	Temperature float64             `json:"temperature,default:0.5"`                             // 温度参数，控制随机性
+	MaxTokens   int                 `json:"maxTokens,default:1000"`                              // 最大 token 数
+	Stream      bool                `json:"stream,default:false"`                                // 是否使用流式响应
+	APIKey      string              `json:"apiKey"`                                              // OpenAI API Key
+	BaseURL     string              `json:"baseURL,default:https://api.openai.com/v1,omitempty"` // OpenAI API Base URL
+}
+
 // GetServiceNodeArgs 获取服务节点参数
 func GetServiceNodeArgs(originNodeDef interface{}, argsType ServiceNodeArgsType) (interface{}, error) {
 	args, err := getServiceNodeOriginArgs(originNodeDef, argsType)
@@ -288,6 +301,14 @@ func GetServiceNodeArgs(originNodeDef interface{}, argsType ServiceNodeArgsType)
 		protocolArgs := &FAASArgs{}
 		err := utils.ToOtherInterfaceValue(&protocolArgs, args)
 		return protocolArgs, err
+	case OpenAIService:
+		protocolArgs := &OpenAIArgs{}
+		err := utils.ToOtherInterfaceValue(&protocolArgs, args)
+		return protocolArgs, err
+	case MCPService:
+		protocolArgs := &MCPArgs{}
+		err := utils.ToOtherInterfaceValue(&protocolArgs, args)
+		return protocolArgs, err
 	default:
 		return nil, fmt.Errorf("illegal service node protocol:[%v]", protocol)
 	}
@@ -299,8 +320,10 @@ func getServiceProtocol(originNodeDef interface{}, argsType ServiceNodeArgsType)
 	return ServiceType(strings.ToUpper(r.Protocol))
 }
 
+// ServiceNodeArgsType 服务节点参数类型
 type ServiceNodeArgsType string
 
+// ServiceNodeArgsType 服务节点参数类型
 const (
 	NormalArgs  ServiceNodeArgsType = "NORMAL"
 	PollingArgs ServiceNodeArgsType = "POLLING"
@@ -654,9 +677,10 @@ type ServiceType string
 
 // HTTP、FAAS 和 MCP 服务类型常量
 const (
-	HTTPService ServiceType = "HTTP" // HTTP 服务节点
-	FAASService ServiceType = "FAAS" // FAAS 服务节点
-	MCPService  ServiceType = "MCP"  // MCP 服务节点
+	HTTPService   ServiceType = "HTTP"   // HTTP 服务节点
+	FAASService   ServiceType = "FAAS"   // FAAS 服务节点
+	MCPService    ServiceType = "MCP"    // MCP 服务节点
+	OpenAIService ServiceType = "OPENAI" // OPENAI 服务节点
 )
 
 // UnmarshalJSON 重写反序列化方法
