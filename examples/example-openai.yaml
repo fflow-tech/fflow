@@ -1,0 +1,23 @@
+namespace: testnamespace
+name: 执行 OpenAI API 示例
+nodes:
+  - 监控服务是否正常:
+      args:
+        body:
+          key: value
+        method: GET
+        protocol: HTTP
+        url: https://www.fflow.link/auth/ping
+      next: t2
+      type: SERVICE
+      webhooks:
+        - https://www.fflow.link/auth/ping
+  - t2:
+      args:
+        protocol: OPENAI
+        base_url: https://openrouter.ai/api/v1
+        api_key: your-api-key
+        model: deepseek/deepseek-r1-distill-qwen-32b:free
+        prompt: Hello, how are you?
+      next: end
+      type: SERVICE

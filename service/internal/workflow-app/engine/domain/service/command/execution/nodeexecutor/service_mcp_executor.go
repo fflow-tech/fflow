@@ -2,6 +2,7 @@ package nodeexecutor
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/domain/entity"
 	"github.com/fflow-tech/fflow/service/internal/workflow-app/engine/domain/ports"
@@ -40,31 +41,12 @@ func (d *ServiceMCPNodeExecutor) Execute(ctx context.Context,
 // Polling 轮询节点
 func (d *ServiceMCPNodeExecutor) Polling(ctx context.Context,
 	nodeInst *entity.NodeInst, originArgs interface{}) error {
-	args := originArgs.(*entity.MCPArgs)
-	nodeInst.PollInput = args.Body
-	rsp, err := d.call(ctx, args)
-	if err != nil {
-		nodeInst.PollFailedCount += 1
-		nodeInst.Reason.PollFailedReason = err.Error()
-		return err
-	}
-
-	nodeInst.PollOutput = rsp
-	return nil
+	return fmt.Errorf("not implemented")
 }
 
 // Cancel 取消执行节点
 func (d *ServiceMCPNodeExecutor) Cancel(ctx context.Context, nodeInst *entity.NodeInst, originArgs interface{}) error {
-	args := originArgs.(*entity.MCPArgs)
-	nodeInst.CancelInput = args.Body
-	rsp, err := d.call(ctx, args)
-	if err != nil {
-		return err
-	}
-
-	nodeInst.CancelOutput = rsp
-	nodeInst.Status = entity.NodeInstCancelled
-	return nil
+	return fmt.Errorf("not implemented")
 }
 
 // call 组装 request 并发送 rpc 请求
